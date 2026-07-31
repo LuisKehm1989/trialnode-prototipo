@@ -258,10 +258,10 @@ html,body{margin:0;padding:0;background:#FAF8F7;}
     z-index:9999;
   }
 
-  /* el logo escala solo: chico en mobile, tope en desktop */
+  /* el logo escala solo: chico en mobile, tope en desktop. Piso mobile +20% (170px -> 204px), a pedido de Luis (quedaba chico) */
   #tn-preloader .stage{
     position:relative;
-    width:clamp(170px, 42vw, 340px);
+    width:clamp(204px, 50vw, 340px);
     aspect-ratio:495 / 109;
   }
 
@@ -1301,6 +1301,7 @@ html,body{margin:0;padding:0;background:#FAF8F7;}
     renderNav(name, arg);
     renderFooter();
     fitIntakeForm();
+    window.scrollTo(0, 0); // sin esto, si la pantalla anterior quedó scrolleada, la nueva arranca igual de abajo
   }
   // valida los campos obligatorios y, si están OK, pide el consentimiento en un modal (ver openConsent)
   function validateAndAnalyze(){

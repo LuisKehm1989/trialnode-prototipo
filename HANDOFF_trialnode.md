@@ -289,6 +289,17 @@ Pedido de Luis, probando en su celular real vía el link de GitHub Pages: al car
 
 **Validado:** con un nombre de archivo de ~95 caracteres sin espacios (`WhatsApp_Image_2026-07-31_at_14.23.45_historia_clinica_completa_version_final_definitiva.jpeg`) en mobile (375px): sin overflow horizontal (`scrollWidth === clientWidth === 375`), `.form-card` mide los 335px correctos, y el nombre se trunca visualmente (quiere 680px, se corta a 175px visibles). En desktop (1440px) con el mismo nombre: tampoco hay overflow y los altos de `.intake-pitch`/`.form-card` siguen iguales entre sí (744px, sin regresión del fix de la Tanda 11). Flujo completo repetido de punta a punta sin romper nada.
 
+---
+
+## Tanda 16 — preloader más grande en mobile + reset de scroll al cambiar de pantalla
+
+Últimos dos ajustes del día, a pedido de Luis después de probar en su celular:
+
+- **Preloader chico en mobile:** el logo escalaba con `clamp(170px, 42vw, 340px)` — en la mayoría de los celulares (viewport < ~405px) `42vw` queda por debajo del piso de 170px, así que terminaba siempre al tamaño mínimo. Subido a `clamp(204px, 50vw, 340px)` — el piso es 170×1.2 = 204px (el +20% pedido), y el coeficiente de `vw` se subió en la misma proporción para que la escala intermedia (celulares grandes/tablets chicas) crezca acorde. El tope de 340px (desktop) no se tocó.
+- **El scroll no se reseteaba al cambiar de pantalla:** si scrolleabas una pantalla larga (ej. detail) y navegabas a otra (breadcrumb, back, CTA), la pantalla nueva podía arrancar scrolleada hacia abajo en vez de arriba. Fix: `window.scrollTo(0,0)` al final de `render()`, en cada cambio de pantalla — instantáneo, no `smooth` (se espera que se sienta como una pantalla nueva, no una animación).
+
+**Validado:** tamaño del logo en 375px de viewport confirmado en 204px (antes 170px) inyectando la regla real sobre un elemento de prueba. Scroll: se llevó `detail` a `scrollY=800`, se navegó a `results`, y `scrollY` quedó en `0`. Flujo completo repetido de punta a punta sin romper nada.
+
 ### Estado al cierre del día
-- Esta tanda se subió a GitHub (commit + push) antes de cerrar. Repo: `https://github.com/LuisKehm1989/trialnode-prototipo` (privado) · Pages: `https://luiskehm1989.github.io/trialnode-prototipo/` (pública, redirige a `buscador-de-estudios.html`). El fix del overflow ya está en producción — puede tardar 1-2 min en propagar por caché de GitHub Pages.
-- Retomar mañana desde este handoff (Tanda 15 fue la última). Archivo activo: `buscador-de-estudios.html`.
+- Todas las tandas de hoy (13 a 16) están subidas a GitHub (commit + push). Repo: `https://github.com/LuisKehm1989/trialnode-prototipo` (privado) · Pages: `https://luiskehm1989.github.io/trialnode-prototipo/` (pública, redirige a `buscador-de-estudios.html`). Puede tardar 1-2 min en propagar por caché de GitHub Pages.
+- Retomar mañana desde este handoff (Tanda 16 fue la última). Archivo activo: `buscador-de-estudios.html`.
