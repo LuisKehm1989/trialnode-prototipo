@@ -276,3 +276,19 @@ Pedido de Luis: subirlo a internet para poder mostrarlo con un link, no solo loc
 - El repo es `https://github.com/LuisKehm1989/trialnode-prototipo`, rama `main`.
 - Para pushear se necesita que Luis haya logueado git con GitHub al menos una vez en esa máquina (Credential Manager de Windows) — si es una máquina nueva, el primer push hay que pedirle que lo corra él.
 - Si se agregan archivos nuevos que deban ir al sitio público, recordar que quedan expuestos vía Pages sin login — no subir nada que no deba ser público.
+
+---
+
+## Tanda 15 — fix: overflow horizontal en mobile con nombre de archivo largo
+
+Pedido de Luis, probando en su celular real vía el link de GitHub Pages: al cargar una foto con nombre largo (típico de WhatsApp/cámara), se rompía el responsive en mobile.
+
+- **Causa real:** no era el texto del nombre en sí (ya tenía `white-space:nowrap;overflow:hidden;text-overflow:ellipsis` desde hacía varias tandas) — era que **`.form-card` se salía de su columna del grid**. `#tn .intake-grid{grid-template-columns:1fr;}` (mobile) y `grid-template-columns:1.05fr .95fr;` (desktop) usaban fracciones solas, y por default un grid item tiene un tamaño mínimo automático basado en su contenido — igual que ya nos pasó una vez con el alto (fix de la Tanda 11, `grid-auto-rows:minmax(0,1fr)`), pero esta vez en el ancho. Con un nombre de archivo largo sin espacios, `.form-card` se estiraba a 847px en un viewport de 375px, aunque el grid container medía bien 335px.
+- **Fix:** `grid-template-columns:1fr` → `minmax(0,1fr)` (mobile), `1.05fr .95fr` → `minmax(0,1.05fr) minmax(0,.95fr)` (desktop). Con eso el grid item queda realmente acotado a su columna, y ahí sí el `min-width:0` + `ellipsis` que ya estaba en el nombre del archivo puede truncar como corresponde.
+- **De paso:** se blindó también `.up-filled` (la caja del archivo cargado) con `width:100%;box-sizing:border-box;overflow:hidden` — no era la causa raíz, pero es la misma defensa que ya tenía `.up-dropzone` (la caja vacía) y no estaba en la versión "llena".
+
+**Validado:** con un nombre de archivo de ~95 caracteres sin espacios (`WhatsApp_Image_2026-07-31_at_14.23.45_historia_clinica_completa_version_final_definitiva.jpeg`) en mobile (375px): sin overflow horizontal (`scrollWidth === clientWidth === 375`), `.form-card` mide los 335px correctos, y el nombre se trunca visualmente (quiere 680px, se corta a 175px visibles). En desktop (1440px) con el mismo nombre: tampoco hay overflow y los altos de `.intake-pitch`/`.form-card` siguen iguales entre sí (744px, sin regresión del fix de la Tanda 11). Flujo completo repetido de punta a punta sin romper nada.
+
+### Estado al cierre del día
+- Esta tanda se subió a GitHub (commit + push) antes de cerrar. Repo: `https://github.com/LuisKehm1989/trialnode-prototipo` (privado) · Pages: `https://luiskehm1989.github.io/trialnode-prototipo/` (pública, redirige a `buscador-de-estudios.html`). El fix del overflow ya está en producción — puede tardar 1-2 min en propagar por caché de GitHub Pages.
+- Retomar mañana desde este handoff (Tanda 15 fue la última). Archivo activo: `buscador-de-estudios.html`.

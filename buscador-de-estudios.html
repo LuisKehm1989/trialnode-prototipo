@@ -136,7 +136,9 @@ html,body{margin:0;padding:0;background:#FAF8F7;}
 #tn .footer-links button{border:none;background:transparent;padding:0;font-family:inherit;font-size:12px;color:var(--muted);cursor:pointer;-webkit-appearance:none;appearance:none;text-decoration:none;}
 @media (hover:hover){ #tn .footer-links button:hover{color:var(--teal);text-decoration:underline;} }
 /* intake: pitch + formulario */
-#tn .intake-grid{display:grid;grid-template-columns:1fr;gap:22px;}
+/* minmax(0,1fr), no 1fr solo: sin esto, un grid item (ej. form-card con un nombre de archivo largo)
+   puede estirar la columna más allá del ancho real disponible en vez de achicarse y truncar */
+#tn .intake-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:22px;}
 #tn .form-card{background:#fff;border-radius:20px;box-shadow:0 1px 3px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.03);padding:20px 18px;}
 #tn .pitch-title{font-size:26px;font-weight:700;color:#1A1A1A;line-height:1.2;margin:0 0 10px;}
 #tn .pitch-br{display:none;}  /* el salto de línea del título solo se activa en desktop, ver media 860 */
@@ -169,7 +171,7 @@ html,body{margin:0;padding:0;background:#FAF8F7;}
   /* grid-auto-rows:minmax(0,1fr) es lo que realmente limita la fila al alto disponible: sin esto,
      una fila "auto" crece con el contenido (ej. errores de validación) y se sale de #viewport,
      pisando lo que venga después (el footer). Con esto, form-card queda con un alto real y acotado. */
-  #tn .intake-grid{grid-template-columns:1.05fr .95fr;grid-auto-rows:minmax(0,1fr);gap:40px;align-items:stretch;flex:1 1 auto;min-height:0;}
+  #tn .intake-grid{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);grid-auto-rows:minmax(0,1fr);gap:40px;align-items:stretch;flex:1 1 auto;min-height:0;}
   #tn .intake-pitch{display:flex;flex-direction:column;justify-content:center;gap:20px;min-height:0;padding:0 24px 0 48px;}
   #tn .pitch-title{font-size:42px;line-height:1.1;margin:0 0 12px;letter-spacing:-.01em;}
   #tn .pitch-br{display:inline;}
@@ -795,9 +797,9 @@ html,body{margin:0;padding:0;background:#FAF8F7;}
       var thumb = uploadedPreview
         ? '<div style="flex:none;width:44px;height:44px;border-radius:8px;overflow:hidden;border:1px solid #E2E2E2;"><img src="'+uploadedPreview+'" alt="" style="width:100%;height:100%;object-fit:cover;display:block;"></div>'
         : '<div style="flex:none;width:36px;height:36px;border-radius:8px;background:#E6F1EF;color:#007567;display:flex;align-items:center;justify-content:center;font-size:17px;"><i class="ti ti-file-check"></i></div>';
-      return '<div class="up-filled" style="display:flex;align-items:center;gap:11px;padding:12px;border:1px solid #E2E2E2;border-radius:8px;background:#fff;">'+
+      return '<div class="up-filled" style="display:flex;align-items:center;gap:11px;padding:12px;border:1px solid #E2E2E2;border-radius:8px;background:#fff;width:100%;box-sizing:border-box;overflow:hidden;">'+
         thumb+
-        '<div style="flex:1;min-width:0;"><div style="font-size:13px;color:#1A1A1A;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+uploadedName+'</div><div style="font-size:11px;color:#6B6B6B;">'+t('up_loaded')+'</div></div>'+
+        '<div style="flex:1;min-width:0;overflow:hidden;"><div style="font-size:13px;color:#1A1A1A;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+uploadedName+'</div><div style="font-size:11px;color:#6B6B6B;">'+t('up_loaded')+'</div></div>'+
         '<button class="navbtn" data-act="removeUpload" aria-label="'+t('up_remove')+'" style="flex:none;width:40px;height:40px;color:#6B6B6B;font-size:17px;cursor:pointer;-webkit-appearance:none;appearance:none;"><i class="ti ti-x"></i></button></div>';
     }
     // input real con capture. En el celular abre la cámara (capture="environment"); en desktop, el explorador.
