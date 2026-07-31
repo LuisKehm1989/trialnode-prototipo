@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<!-- sin este meta, el celular renderiza a ~980px y el modo mobile nunca se activa -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TrialNode — Prototipo</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAjxJREFUeAHtmM1KAlEYhr+in0UZFf1QGURBP4sichG1iFq06wLqAmrbD7TN6gK6gFq10gtoV5DWwlwIUpsSTEFFokDQWliL6bzqYs6ZozOjk86iB0aGT4d5/d7znnNmiBiKonSzw82OmFJ/YqV7d0NLU+nklh3z1FjC7FhrZh+71HgxVNKwhw7F2MkY2YM4BClkI5rJZthOUIveD3I/eTr0X3G1oY4uci+tV7zO8xwmfzLK1Q5cKzTZ0081CXK0ttPCgJMunoKqaoqmevtpc6p8OCOZdwq9pbha7jtPehiybGt6noY7HFzt/DFo6AZmMSTI0dZOR4JFEHP6cE1WY3hQuwadGot8iVdmS5KsxFTKduYWNdadBG4stc6UIFi3z5KiJv2VFQZ8ESTxzwWB1dEJcg2McDVEXLRO1k1LBEUyHxpL3MvrhW6pOQvdaa490pmrqhIkSxPs2J5d5GoQfi5YJwtCzYKALE2Ym0TrvMw6jCk1Zq0zPIZkaRKtw/cnAb6bsiBYIkiWJlgnWoLlwvsS5mqyINQsCJRL02RPH1fDsiJaJwtCzYIArBM5ECyRWYdu6q30VQnCPzeSJljnS0TJLFVt0NKfWU1Nlqaz0L3pZcWyHaNsR1BuWamLIADrVp3jXE0WhLoJAuiSmCYzOwLLBUGMuKzAOo8wN5VDd0893OmgjfEZrgZrKoFlBR1Rz0UIAh4YsEevxP+Doh62FBQn+xCHoEuyD5e2e2FVOFOKr/SOlca90jsuNYZ+ASWS6WduLxRAAAAAAElFTkSuQmCC">
+</head>
+<body>
+
+<div id="tn-preloader" role="status" aria-label="Cargando">
+
+    <div class="stage">
+
+      <!-- sin capa fantasma: arranca en blanco, sin ningún trazo visible hasta que empiezan a aparecer -->
+      <svg class="fill" viewBox="0 0 495 109" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M0.761719 17.0486V1.0949H62.5528V17.0486H40.2571V79.7996H23.0575V17.0486H0.761719Z" fill="#020001"/>
+        <path d="M101.04 26.6208V42.0426H95.8372C86.4942 42.0426 80.8672 46.1906 80.8672 56.72V79.7996H64.517V26.7271H79.9117L80.761 34.5976C82.9906 29.386 87.6621 25.8762 94.7755 25.8762C96.6866 25.8762 98.81 26.089 101.04 26.6208Z" fill="#020001"/>
+        <path d="M117.377 19.9012C112.174 19.9012 108.034 15.7533 108.034 10.5417C108.034 5.3302 112.174 1.28861 117.377 1.28861C122.473 1.28861 126.613 5.3302 126.613 10.5417C126.613 15.7533 122.473 19.9012 117.377 19.9012ZM109.308 79.7996V26.6208H125.658V79.7996H109.308Z" fill="#020001"/>
+        <path d="M153.955 80C142.701 80 135.694 73.4058 135.694 62.9828C135.694 53.1978 142.595 47.1355 155.336 46.1782L170.2 45.0083V44.1574C170.2 38.9459 167.014 36.1806 161.175 36.1806C154.274 36.1806 150.558 38.8396 150.558 43.6256H136.968C136.968 31.6072 146.842 23.7368 162.024 23.7368C177.419 23.7368 186.125 32.3517 186.125 47.5609V79.7996H171.686L170.624 71.5977C168.926 76.4902 161.918 80 153.955 80ZM159.689 67.8752C165.953 67.8752 170.306 64.7908 170.306 58.7284V55.8568L162.024 56.6013C154.911 57.2394 152.363 58.8348 152.363 62.2382C152.363 66.0671 154.699 67.8752 159.689 67.8752Z" fill="#020001"/>
+        <path d="M214.202 79.7996H197.852V1.18225H214.202V79.7996Z" fill="#020001"/>
+        <path d="M307.066 51.7238C307.066 34.9193 319.381 23.6453 336.369 23.6453C353.25 23.6453 365.565 34.9193 365.565 51.7238C365.565 68.5283 353.25 79.6958 336.369 79.6958C319.381 79.6958 307.066 68.5283 307.066 51.7238ZM323.522 51.6174C323.522 59.7006 328.724 65.0185 336.369 65.0185C343.907 65.0185 349.109 59.7006 349.109 51.6174C349.109 43.6406 343.907 38.3227 336.369 38.3227C328.724 38.3227 323.522 43.6406 323.522 51.6174Z" fill="#34A491"/>
+        <path d="M397.34 80C382.052 80 372.178 69.1515 372.178 52.347C372.178 35.4361 382.264 23.7368 398.402 23.7368C404.984 23.7368 411.248 26.3957 414.327 30.331V0H430.678V79.7996H415.283L414.434 71.8104C411.567 76.7029 404.984 80 397.34 80ZM401.268 65.0036C408.913 65.0036 414.221 59.6857 414.221 51.7088C414.221 43.732 408.913 38.4141 401.268 38.4141C393.518 38.4141 388.634 43.8384 388.634 51.7088C388.634 59.5793 393.518 65.0036 401.268 65.0036Z" fill="#34A491"/>
+        <path d="M467.271 80C451.239 80 439.773 68.3007 439.773 51.9216C439.773 35.3298 450.921 23.7368 466.952 23.7368C483.621 23.7368 494.026 34.6916 494.026 52.0279V56.1759L455.486 56.3886C456.441 63.4082 460.37 66.7053 467.589 66.7053C473.747 66.7053 478.1 64.4718 479.268 60.6429H494.238C492.327 72.4486 481.816 80 467.271 80ZM467.058 37.0315C460.582 37.0315 456.972 39.9031 455.698 46.2846H477.782C477.782 40.6476 473.641 37.0315 467.058 37.0315Z" fill="#34A491"/>
+        <path d="M295.54 1.18227H277.745V23.4341L295.54 51.5482V1.18227Z" fill="#34A491"/>
+        <path d="M227.363 79.6059H245.158V57.3205L227.363 29.47V79.6059Z" fill="#34A491"/>
+        <path d="M277.575 79.6059H295.54L245.327 1.18227H227.363L277.575 79.6059Z" fill="#34A491"/>
+        <path d="M303.649 96.0903C304.284 94.9846 305.607 94.0783 307.365 94.0783C310.048 94.0783 312.078 96.0722 312.078 99.1717C312.078 102.253 310.03 104.338 307.365 104.338C305.553 104.338 304.266 103.431 303.649 102.344V104.174H302V90.7613H303.649V96.0903ZM310.392 99.1717C310.392 96.8335 308.851 95.5103 307.021 95.5103C305.226 95.5103 303.649 96.8879 303.649 99.1898C303.649 101.528 305.226 102.888 307.021 102.888C308.851 102.888 310.392 101.51 310.392 99.1717Z" fill="#020001"/>
+        <path d="M318.019 102.289L321.101 94.2415H322.804L316.823 108.851H315.119L317.077 104.066L313.071 94.2415H314.902L318.019 102.289Z" fill="#020001"/>
+        <path d="M329.259 99.5161V91.5407H330.908V99.5342C330.908 101.854 332.159 102.851 334.026 102.851C335.893 102.851 337.125 101.854 337.125 99.5342V91.5407H338.775V99.5161C338.775 102.797 336.618 104.301 334.008 104.301C331.398 104.301 329.259 102.797 329.259 99.5161Z" fill="#020001"/>
+        <path d="M348.795 104.174V98.5554C348.795 96.5253 347.689 95.4922 346.022 95.4922C344.336 95.4922 343.176 96.5435 343.176 98.6823V104.174H341.526V94.2415H343.176V95.6553C343.828 94.6221 345.025 94.0602 346.366 94.0602C348.668 94.0602 350.426 95.474 350.426 98.3198V104.174H348.795Z" fill="#020001"/>
+        <path d="M364.75 91.5226V92.882H359.603V97.1054H364.206V98.4648H359.603V102.815H364.75V104.174H357.953V91.5226H364.75Z" fill="#020001"/>
+        <path d="M374.515 104.174V98.5554C374.515 96.5253 373.409 95.4922 371.741 95.4922C370.056 95.4922 368.896 96.5435 368.896 98.6823V104.174H367.246V94.2415H368.896V95.6553C369.548 94.6221 370.744 94.0602 372.086 94.0602C374.388 94.0602 376.146 95.474 376.146 98.3198V104.174H374.515Z" fill="#020001"/>
+        <path d="M385.982 101.474C385.982 103.105 384.55 104.338 382.357 104.338C380.037 104.338 378.405 103.069 378.297 101.256H380C380.091 102.217 380.943 102.942 382.339 102.942C383.644 102.942 384.369 102.289 384.369 101.474C384.369 99.2623 378.496 100.549 378.496 96.8516C378.496 95.329 379.928 94.0783 382.139 94.0783C384.332 94.0783 385.783 95.2565 385.891 97.196H384.242C384.169 96.1991 383.408 95.474 382.085 95.474C380.87 95.474 380.145 96.0541 380.145 96.8516C380.145 99.208 385.909 97.921 385.982 101.474Z" fill="#020001"/>
+        <path d="M387.694 99.1717C387.694 96.0722 389.742 94.0783 392.407 94.0783C394.256 94.0783 395.525 95.0209 396.105 96.0541V94.2415H397.772V104.174H396.105V102.326C395.506 103.395 394.219 104.338 392.389 104.338C389.742 104.338 387.694 102.253 387.694 99.1717ZM396.105 99.1898C396.105 96.8879 394.546 95.5103 392.733 95.5103C390.921 95.5103 389.38 96.8335 389.38 99.1717C389.38 101.51 390.921 102.888 392.733 102.888C394.546 102.888 396.105 101.528 396.105 99.1898Z" fill="#020001"/>
+        <path d="M404.33 102.289L407.411 94.2415H409.115L403.133 108.851H401.43L403.387 104.066L399.381 94.2415H401.212L404.33 102.289Z" fill="#020001"/>
+        <path d="M420.199 99.1898C420.199 102.344 417.933 104.338 415.105 104.338C412.296 104.338 410.157 102.344 410.157 99.1898C410.157 96.0541 412.368 94.0783 415.178 94.0783C418.005 94.0783 420.199 96.0541 420.199 99.1898ZM411.843 99.1898C411.843 101.709 413.383 102.888 415.105 102.888C416.827 102.888 418.513 101.709 418.513 99.1898C418.513 96.6885 416.863 95.5103 415.16 95.5103C413.42 95.5103 411.843 96.6885 411.843 99.1898Z" fill="#020001"/>
+        <path d="M428.849 96.0722C429.447 95.0209 430.752 94.0783 432.565 94.0783C435.23 94.0783 437.278 96.0722 437.278 99.1717C437.278 102.253 435.23 104.338 432.565 104.338C430.752 104.338 429.465 103.359 428.849 102.344V108.887H427.2V94.2415H428.849V96.0722ZM435.592 99.1717C435.592 96.8335 434.051 95.5103 432.221 95.5103C430.426 95.5103 428.849 96.8879 428.849 99.1898C428.849 101.528 430.426 102.888 432.221 102.888C434.051 102.888 435.592 101.51 435.592 99.1717Z" fill="#020001"/>
+        <path d="M438.833 99.1717C438.833 96.0722 440.881 94.0783 443.545 94.0783C445.394 94.0783 446.663 95.0209 447.243 96.0541V94.2415H448.911V104.174H447.243V102.326C446.645 103.395 445.358 104.338 443.527 104.338C440.881 104.338 438.833 102.253 438.833 99.1717ZM447.243 99.1898C447.243 96.8879 445.684 95.5103 443.872 95.5103C442.059 95.5103 440.518 96.8335 440.518 99.1717C440.518 101.51 442.059 102.888 443.872 102.888C445.684 102.888 447.243 101.528 447.243 99.1898Z" fill="#020001"/>
+        <path d="M453.348 98.7729V104.174H451.698V94.2415H453.348V95.8547C453.909 94.749 454.979 94.0602 456.556 94.0602V95.764H456.121C454.544 95.764 453.348 96.471 453.348 98.7729Z" fill="#020001"/>
+        <path d="M457.844 99.1717C457.844 96.0722 459.892 94.0783 462.556 94.0783C464.405 94.0783 465.674 95.0209 466.254 96.0541V94.2415H467.922V104.174H466.254V102.326C465.656 103.395 464.369 104.338 462.538 104.338C459.892 104.338 457.844 102.253 457.844 99.1717ZM466.254 99.1898C466.254 96.8879 464.695 95.5103 462.883 95.5103C461.07 95.5103 459.529 96.8335 459.529 99.1717C459.529 101.51 461.07 102.888 462.883 102.888C464.695 102.888 466.254 101.528 466.254 99.1898Z" fill="#020001"/>
+        <path d="M475.541 104.174V91.6313H477.318L481.958 101.999L486.598 91.6313H488.356V104.174H486.707V94.8215L482.538 104.174H481.378L477.191 94.8034V104.174H475.541Z" fill="#020001"/>
+        <path d="M491.154 104.174V94.2415H492.803V104.174H491.154ZM489.885 92.2657L493.746 90V91.4319L489.885 93.4983V92.2657Z" fill="#020001"/>
+      </svg>
+
+    </div>
+
+  </div>
+<h2 class="sr-only">Prototipo mobile de TrialNode. Tras confirmar la postulación en el modal, el usuario vuelve a la pantalla de inicio.</h2>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+/* iconos Tabler embebidos y subseteados en base64 (solo los 14 que se usan), para no depender de un CDN y andar offline */
+@font-face{font-family:"tabler-icons";font-style:normal;font-weight:400;font-display:block;src:url(data:font/woff2;base64,d09GMgABAAAAAAdIAAsAAAAAEfQAAAb7AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHCoGYACBHAqdJJghATYCJAMiCyAABCAFgQoHIBuMDlGUUM4CEB8L2VmYH7IUo/JN/z9u+pdATV7wKX2ZGJ06pSq0yD6MumYO3+CEiSjQdd80zDQVha861wYYMPN/uN+rTUr4WtcqQElC9QtVJy9J4ZK8Ul6BeYQ3AHCzm1AFskO2es7UCDWzkWsWrmgHQwp0/f954AFAMIyCMUCo41JyILzS3FgNMhAAALx5AwGYBfj/8TaCXxqxnPD4a8kCvN9gMo+A+OF+fPCvl7HYQjhzXX5vb+++2UvfL1DKlgCqiSvna9FpeWeKAOytwyCS+WXh1+XXjdfN10uu117fe/2P6//dCL0x5IbmRu/NTff2VvYMVP6V4v/ER8WHxfvE28Tl4pFiheiV6LboS9Ec4crweuBBsBHgw1hGjOBlov/w8EZZfU1EXMDD2v2BYC4IgnDgh4VAobgqYMSuCNgrHaBXFiaRXCfHyWRDhig+KDws3AQAx+sYLK0hEY426/HgcMYt3WoRa7YxRiS525kcukWat0PWwohyDmK4cl14CSssVREUbTewrcY9BotmIPIceT7N0x9xgyWnHx6T61Ust8yaMgxfgxW2QWobh51ikerMiaZC5xS62KpcJixITkl0hbDdcjakd2S2uFjghzAwOK3folio4LIwrNa0HXvAHN+FvfWrGApU+k1M+5ksnbVNyU8xKs+AFJTNNeEE4/cvcXSdb4uzuMu5tOK+uNSSEsaqrOc6g3NwjlYlomrcBbRlXE56i8J5DDBP7DtsDWBAYz3HVMHwPkmu9pICq9fL9A/BK5/vcnSchaosKbEMDDh849h+hjmXuIDZ2nccRDO95ixtvcqN3/HQjG/fp9nRPdbdVTMLfHm+XK839nL6+xs0A72HvSyQiCs42HHAmYzMTlaD+9qZzvMU1T/F1MP+w/ceoavQd/gDB9HVMFixfenY1mUkp3l4ESsmK2YZ0aWpYWbus/2o6CParbt2HXO5pIYdux8tll2tu7dnt+Q+51HNLBg172jbY+X37BRv3WkxZ+GOPRL9dsZzum3H9MN18Ex8qq/XCSB5ufSYuvsHQq8ve8d+eYun3wvnW6jbVveZFyah8fVSnxbYAl3vqn+GN7HmQ50bEI0SEI2Jw1kWs8+eeSh6HwmJ81Ae38FiGq3w6QmdGV3dLNVCAbsw/7yUpdiDB1nSzQKdk8OcdQO2o3e0vwdDcyzl1oesDXWzls4wGmcsnfVHDIAUcPatQ3ZsR4YJKeOTk8enTPjSgwcP3hhET3KaAhnNn6PkMJeVXa//8tlZHhy3m6XYY06OsmHW6WSpasw7GIxsZLfSFt2kTfkTh7mVKztGUhvCiIbJiEYu1EK1EBvSc7rxXQrZKBsimcjYVEm3sDmjEU0eJGnsZ8cV4MBNGDFAwVLaKS0oQfn5hbfwpkBMyjSlpVuNOaX8DSaGDF79793W4RznQtTejnZRL86h/sAbg3AO5RG6Xx55kFTEi3GFOGijnDP2eWkxz8kQBy+ntYnSzFJZzP/9GL4bdxdzJFqPIeoeS6FYhFqefUXKjHOXxApb1+yZJuPM+hjudrbaPCy3qC3yqhFGeSWkfBM9ITllgj4GajIa2bAtb5HoTo1USmOVZCyJDUYhs8dDeT7+yLMpZj/+mMWVv7Tcvdsy2VU0xosLYbFKAkWvmOKJj5ebZUYAEWzYcEUZ4F7JBgWlPdoiTBEmRj3JNTXJFJIAAhLAUGyX0rIaFwC1YfZMY+uY0aMpOkNmVVtlInmrByLl60PWH3pl6vikpPGpyi9ioCAFHKvvi83UMXV1Mfb6GFWduoEP3o0MutbQPZupVfX1KnudKqZe3Zs32DWw6Hth0qeuM/bBg3Kqfk6IEjwllF8Jor4AZEfPEUsRJccGI5p0kjTuHUuStCCgKfwt4uWj1+nOq3Omd8dlh812XjPd/v+71VG3jvz94d693mHPrrCBiciOruUmsO6L2feP3Iq6yV55NsyrM/Ihyv6Hd0z2o+mvX9w2HffdOtqe+8G2DuedeoBs6Pm82+I5sm3/kMNsSckjprRkpHE7R3GsdBbbqHUxfNZxW9kWfWLVqhPUfso7HI/G7W/WKCwKkynqcJY3I/LXJDWVPOvkZoOhebKVuPT4l65bj9TyjUNLS4dtHBRr+uXlrdorHOZu3Rot6fthzSH081XE5/fUCoJxxB7WS9/caRt/Mkqrxr3R/AUmZS4S5n4AviyL+281BFLFmwo8+fFB0qiLdaaIeY8CQ/j/AQD8s77nAIlvQoGd3eS/B+mBQIAwUv8VIRgIBfaSwv8i5V66S4YgzSYj+LdhFuMUbrU/pOEDTxCkwGXlyVwCwkF2Pl90vgC5fiCBUdYfr9/ILF+lIvWUUKZAjWoNspitJZqe3OxyqbAGdRylgMkQDZPgf8SbB0MAAA==) format("woff2");}
+#tn .ti{font-family:"tabler-icons"!important;font-weight:400;font-style:normal;font-variant:normal;text-transform:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;display:inline-block;vertical-align:middle;}
+#tn .ti-arrow-left:before{content:"\ea19"}
+#tn .ti-flask:before{content:"\ebd2"}
+#tn .ti-map-pin:before{content:"\eae8"}
+#tn .ti-chevron-right:before{content:"\ea61"}
+#tn .ti-circle-check:before{content:"\ea67"}
+#tn .ti-point:before{content:"\eb0c"}
+#tn .ti-clock:before{content:"\ea70"}
+#tn .ti-check:before{content:"\ea5e"}
+#tn .ti-file-check:before{content:"\ea9c"}
+#tn .ti-file-upload:before{content:"\ec91"}
+#tn .ti-x:before{content:"\eb55"}
+#tn .ti-lock:before{content:"\eae2"}
+#tn .ti-search:before{content:"\eb1c"}
+#tn .ti-search-off:before{content:"\f19c"}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+/* grises secundarios pensados para pasar contraste WCAG AA en texto chico */
+#tn{--teal:#007567;--teal7:#005E53;--teal4:#60A9A0;--tint:#E6F1EF;--bg:#FAF8F7;--surf:#fff;--ink:#1A1A1A;--muted:#6B6B6B;--faint:#6E6E6E;--bd:#E2E2E2;--div:#E8E8E8;--font:'Poppins',system-ui,sans-serif;}
+#tn *{box-sizing:border-box;font-family:var(--font);}
+#tn .tnin{width:100%;height:50px;padding:0 14px;border:1px solid var(--bd);border-radius:8px;background:#fff;font-size:16px;color:var(--ink);-webkit-appearance:none;appearance:none;}
+#tn .tnin::placeholder{color:var(--muted);}
+#tn .tnin:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px var(--tint);}
+#tn .cta:active{background:var(--teal7);transform:scale(.99);box-shadow:none;}
+#tn .rcard{transition:box-shadow .18s,transform .12s;padding:15px;}
+/* pantalla de resultados (mobile-first) */
+#tn .matchb{display:inline-block;font-size:11px;font-weight:600;color:#005E53;background:#E6F1EF;padding:4px 11px;border-radius:999px;}
+#tn .countb{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 7px;border:1px solid #E2E2E2;border-radius:999px;font-size:12px;font-weight:600;color:#6B6B6B;background:#fff;}
+#tn .res-head{display:flex;align-items:center;gap:9px;margin:2px 0 3px;}
+#tn .res-h1{font-size:22px;font-weight:700;color:#1A1A1A;margin:0;}
+#tn .res-sub{font-size:13px;color:#6B6B6B;margin:0 0 18px;}
+#tn .rc-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;}
+#tn .rc-cond{font-size:11px;font-weight:500;color:#6B6B6B;}
+#tn .rc-title{font-size:15px;font-weight:600;color:#1A1A1A;line-height:1.35;margin-bottom:11px;}
+#tn .rc-meta{display:flex;gap:13px;align-items:center;margin-top:12px;font-size:11px;color:#6B6B6B;}
+#tn .rc-tail{margin-left:auto;}
+#tn .rc-applied{display:inline-flex;align-items:center;gap:4px;color:#007567;font-size:11px;font-weight:600;}
+#tn .rc-chev{color:#007567;font-size:15px;}
+/* pantalla de detalle (mobile-first) + escala tipográfica compartida vía .scr */
+#tn .scr-h1{font-size:22px;font-weight:700;color:#1A1A1A;margin:11px 0 12px;line-height:1.3;}
+#tn .scr-pill{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid #E2E2E2;padding:5px 11px;border-radius:999px;font-size:11px;color:#6B6B6B;}
+#tn .scr-eyebrow{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#6E6E6E;}
+#tn .scr-li{display:flex;gap:9px;align-items:flex-start;margin-bottom:10px;font-size:13px;color:#1A1A1A;line-height:1.45;}
+#tn .scr-note{font-size:12px;color:#6B6B6B;line-height:1.5;}
+#tn .scr-body{font-size:13px;color:#1A1A1A;line-height:1.4;}
+/* términos/privacidad: documento largo, columna angosta para que se lea bien */
+#tn .legal-doc{max-width:720px;font-size:13px;line-height:1.65;color:#1A1A1A;}
+#tn .legal-doc h2{font-size:16px;font-weight:700;color:#1A1A1A;margin:26px 0 10px;}
+#tn .legal-doc h2:first-child{margin-top:0;}
+#tn .legal-doc h3{font-size:14px;font-weight:700;color:#1A1A1A;margin:16px 0 8px;}
+#tn .legal-doc p{margin:0 0 12px;}
+#tn .legal-doc ul{margin:0 0 12px;padding-left:20px;}
+#tn .legal-doc li{margin-bottom:6px;}
+#tn .legal-row{margin:0 0 12px;padding:12px;background:#F6FAF9;border:1px solid #E6F1EF;border-radius:10px;}
+#tn .legal-row-label{font-weight:600;font-size:13px;color:#1A1A1A;margin-bottom:4px;}
+#tn .legal-meta{font-size:12px;color:#6B6B6B;margin-top:24px;}
+#tn .rcard:active{transform:scale(.995);}
+#tn .modalWrap{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(26,26,26,.42);animation:fadeIn .18s ease;}
+#tn .modalCard{animation:pop .22s cubic-bezier(.2,.8,.3,1.1);}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.96)}to{opacity:1;transform:none}}
+/* estado de error de validación */
+#tn .tnin.err{border-color:#C0392B;box-shadow:0 0 0 3px rgba(192,57,43,.12);}
+#tn .fielderr{font-size:13px;color:#C0392B;margin-top:5px;line-height:1.35;display:flex;align-items:flex-start;gap:6px;}
+#tn .fielderr::before{content:"!";flex:none;width:16px;height:16px;border-radius:50%;background:#C0392B;color:#fff;font-size:11px;font-weight:700;line-height:16px;text-align:center;margin-top:1px;}
+#tn .slot-err{border-color:#C0392B !important;}
+/* foco visible por teclado */
+#tn button:focus-visible,#tn .tnin:focus-visible,#tn [tabindex]:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+/* Layout responsivo real (reflujo por breakpoint, no mockup escalado).
+   Mobile-first (una columna); desktop desde 860px. Contenido centrado hasta --maxw (1200px). */
+html,body{margin:0;padding:0;background:#FAF8F7;}
+#tn{background:#FAF8F7;--maxw:1200px;--pad:20px;position:relative;}
+#tn #stage{position:relative;z-index:1;}  /* por encima de la malla de fondo (#tn-mesh) */
+#tn #tn-topbar{background:#fff;border-bottom:1px solid #E8E8E8;position:sticky;top:0;z-index:50;}
+#tn #navbar{max-width:var(--maxw);margin:0 auto;height:60px;display:flex;align-items:center;gap:6px;padding:0 var(--pad);}
+#tn #viewport{max-width:var(--maxw);margin:0 auto;padding:24px var(--pad) 44px;min-height:calc(100dvh - 60px);}
+#tn .card{background:#fff;border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.03);}
+/* footer: copyright + links legales. Mobile-first: apilado y centrado; fila en desktop (ver media 860). */
+#tn #tn-footer{position:relative;z-index:1;background:transparent;border-top:1px solid #E8E8E8;flex:none;}
+#tn .footer-in{max-width:var(--maxw);margin:0 auto;padding:16px var(--pad);display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;font-size:12px;color:var(--muted);}
+#tn .footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:18px;}
+#tn .footer-links button{border:none;background:transparent;padding:0;font-family:inherit;font-size:12px;color:var(--muted);cursor:pointer;-webkit-appearance:none;appearance:none;text-decoration:none;}
+@media (hover:hover){ #tn .footer-links button:hover{color:var(--teal);text-decoration:underline;} }
+/* intake: pitch + formulario */
+#tn .intake-grid{display:grid;grid-template-columns:1fr;gap:22px;}
+#tn .form-card{background:#fff;border-radius:20px;box-shadow:0 1px 3px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.03);padding:20px 18px;}
+#tn .pitch-title{font-size:26px;font-weight:700;color:#1A1A1A;line-height:1.2;margin:0 0 10px;}
+#tn .pitch-br{display:none;}  /* el salto de línea del título solo se activa en desktop, ver media 860 */
+#tn .pitch-sub{font-size:15px;color:#6B6B6B;line-height:1.6;margin:0 0 18px;max-width:46ch;}
+#tn .pitch-steps{display:flex;flex-direction:column;gap:12px;margin:6px 0 2px;padding:0;list-style:none;}
+#tn .pitch-steps li{display:flex;align-items:center;gap:12px;font-size:14px;color:#1A1A1A;}
+#tn .pitch-steps .st-ic{flex:none;width:32px;height:32px;border-radius:9px;background:#E6F1EF;color:#007567;display:flex;align-items:center;justify-content:center;font-size:16px;}
+#tn .pitch-badge{display:inline-flex;align-items:center;background:#E6F1EF;color:#005E53;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:6px 13px;border-radius:999px;margin:0 0 14px;align-self:flex-start;}
+/* feedback visual al arrastrar un archivo sobre el dropzone */
+#tn .up-wrap.drag .up-dropzone{border-color:#007567;border-style:solid;background:#EAF4F2;}
+/* results: grilla de ensayos */
+#tn .results-grid{display:grid;grid-template-columns:1fr;gap:14px;}
+/* detail: contenido + panel lateral */
+#tn .detail-grid{display:grid;grid-template-columns:1fr;gap:18px;}
+#tn .centered-screen{max-width:460px;margin:0 auto;}
+@media (min-width:600px){
+  #tn .results-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (min-width:860px){
+  /* Desktop: todo entra en 100dvh, sin scroll de página (shell de alto fijo). Excepción: pantallas largas (detail, terms, privacy), ver #tn.is-scrollable más abajo. */
+  html,body{height:100%;}
+  #tn{height:100dvh;display:flex;flex-direction:column;overflow:hidden;}
+  #tn #tn-topbar{flex:none;position:relative;z-index:5;}
+  #tn .footer-in{flex-direction:row;align-items:center;justify-content:space-between;text-align:left;padding:14px var(--pad);}
+  #tn #stage{flex:1 1 auto;min-height:0;position:relative;}
+  #tn #viewport{height:100%;min-height:0;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding-top:24px;padding-bottom:24px;}
+
+  /* intake: dos paneles que llenan el alto */
+  #tn #viewport[data-screen="intake"]{justify-content:stretch;}
+  /* grid-auto-rows:minmax(0,1fr) es lo que realmente limita la fila al alto disponible: sin esto,
+     una fila "auto" crece con el contenido (ej. errores de validación) y se sale de #viewport,
+     pisando lo que venga después (el footer). Con esto, form-card queda con un alto real y acotado. */
+  #tn .intake-grid{grid-template-columns:1.05fr .95fr;grid-auto-rows:minmax(0,1fr);gap:40px;align-items:stretch;flex:1 1 auto;min-height:0;}
+  #tn .intake-pitch{display:flex;flex-direction:column;justify-content:center;gap:20px;min-height:0;padding:0 24px 0 48px;}
+  #tn .pitch-title{font-size:42px;line-height:1.1;margin:0 0 12px;letter-spacing:-.01em;}
+  #tn .pitch-br{display:inline;}
+  #tn .pitch-sub{font-size:15px;margin:0;}
+  #tn .pitch-steps{display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none;}
+  #tn .pitch-steps li{display:flex;align-items:center;gap:12px;font-size:14px;color:#1A1A1A;}
+  #tn .pitch-steps .st-ic{flex:none;width:32px;height:32px;border-radius:9px;background:#E6F1EF;color:#007567;display:flex;align-items:center;justify-content:center;font-size:16px;}
+  /* elementos alineados al top; el dropzone crece para llenar el alto sobrante */
+  /* overflow-y:auto es el resguardo final si el contenido no entra en el alto disponible (mejor un
+     scroll interno chico que contenido tapado o pisando el footer). El layout "compacto" (nombre y
+     teléfono en fila) se activa por JS —fitIntakeForm()— midiendo overflow real, no por CSS: los
+     container queries no reconocen bien el alto que da align-self:stretch desde un grid (probado). */
+  #tn .form-card{align-self:stretch;display:flex;flex-direction:column;justify-content:flex-start;padding:32px;overflow-y:auto;}
+  #tn .name-phone-row > div{min-width:0;}
+  #tn .form-card.compact .name-phone-row{display:flex;gap:14px;margin-bottom:16px;}
+  #tn .form-card.compact .name-phone-row > div{flex:1 1 0;margin-bottom:0;}
+  #tn .form-card .up-wrap{flex:1 1 auto;min-height:120px;display:flex;flex-direction:column;}
+  #tn .form-card .up-wrap > *{flex:1 1 auto;height:auto;}
+  #tn .form-card .up-dropzone{display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  #tn .form-card .up-filled{align-items:center;}
+
+  /* resultados y detalle: alineados al top (no centrados verticalmente) */
+  #tn #viewport[data-screen="results"], #tn #viewport[data-screen="detail"]{justify-content:flex-start;}
+
+  #tn .results-grid{grid-template-columns:repeat(3,1fr);gap:22px;}
+
+  /* escala tipográfica unificada en desktop entre resultados y detalle */
+  #tn .scr .matchb{font-size:13px;padding:5px 14px;}     /* badge compatibilidad, igual en ambas */
+  #tn .scr-h1{font-size:30px;margin:12px 0 14px;}        /* h1 del detalle */
+  #tn .res-screen .res-h1{font-size:30px;}               /* h1 de resultados: mismo tamaño */
+  #tn .res-screen .res-sub{font-size:16px;margin-bottom:26px;}
+  #tn .res-screen .rcard{padding:26px;border-radius:16px;}
+  #tn .res-screen .rc-title{font-size:19px;line-height:1.3;margin-bottom:14px;}
+  #tn .res-screen .rc-cond{font-size:13px;}
+  #tn .res-screen .rc-meta{font-size:15px;gap:16px;margin-top:18px;}
+  #tn .res-screen .countb{min-width:28px;height:28px;font-size:15px;}
+  #tn .res-screen .rc-applied{font-size:13px;}
+  #tn .res-screen .rc-chev{font-size:19px;}
+  /* detalle: mismos tamaños de rol que resultados */
+  #tn .scr .scr-pill{font-size:13px;padding:6px 13px;}
+  #tn .scr .scr-eyebrow{font-size:13px;}
+  #tn .scr .scr-li{font-size:15px;margin-bottom:12px;}
+  #tn .scr .scr-note{font-size:14px;}
+  #tn .scr .scr-body{font-size:15px;}
+  #tn .scr .legal-doc{font-size:15px;}
+  #tn .detail-grid{grid-template-columns:1fr 300px;gap:32px;align-items:start;}
+  #tn .detail-side{position:static;}
+
+  /* CTA estable en intake: el wrap NO colapsa al cargar el archivo (si colapsara, el dropzone perdería
+     su alto y el CTA "Buscar ensayos compatibles" saltaría de lugar). Se mantiene el mismo
+     flex:1 1 auto/min-height:120px de siempre lleno o vacío; lo único que cambia es que el contenido
+     cargado se centra en vez de estirarse para llenar el alto. */
+  #tn .form-card .up-wrap.is-filled{justify-content:center;}
+  #tn .form-card .up-wrap.is-filled > *{flex:0 0 auto;height:auto;}
+
+  /* pantallas largas (detail, terms, privacy) salen del 100dvh sin scroll: el JS togglea is-scrollable
+     en #tn (ver render()). El alto abraza el contenido con padding-bottom, y en detail el panel
+     lateral del CTA queda sticky mientras se scrollea. */
+  #tn.is-scrollable{height:auto;min-height:100dvh;overflow:visible;}
+  #tn.is-scrollable #tn-topbar{position:sticky;top:0;}
+  #tn.is-scrollable #stage{flex:none;overflow:visible;}
+  #tn.is-scrollable #viewport{height:auto;min-height:0;overflow:visible;padding-bottom:48px;}
+  #tn.is-scrollable .detail-side{position:sticky;top:84px;align-self:start;}  /* 84px = 60px navbar + 24px de aire */
+}
+
+/* malla de fondo: líneas rectas teal muy sutiles, atenuadas hacia arriba */
+#tn-mesh{position:absolute;left:0;right:0;bottom:0;height:min(64%,560px);z-index:0;pointer-events:none;background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJub25lIj48cGF0aCBkPSJNMCAwIEgxMDAgTTAgMCBWMTAwIiBzdHJva2U9IiMwMDc1NjciIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLW9wYWNpdHk9IjAuNTUiLz48L3N2Zz4=");background-position:left bottom;background-size:120px 120px;background-repeat:repeat;opacity:.30;-webkit-mask-image:linear-gradient(to top,#000 0%,#000 40%,transparent 100%);mask-image:linear-gradient(to top,#000 0%,#000 40%,transparent 100%);}
+
+/* preloader: las letras del logo aparecen una por una, se funde cuando el sitio está listo */
+
+  #tn-preloader{
+    --bg:#FAF8F7;
+    --ink:#020001;        /* negro del logo */
+    --accent:#34A491;     /* teal de acento */
+  }
+
+  #tn-preloader{
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--bg);
+    z-index:9999;
+  }
+
+  /* el logo escala solo: chico en mobile, tope en desktop */
+  #tn-preloader .stage{
+    position:relative;
+    width:clamp(170px, 42vw, 340px);
+    aspect-ratio:495 / 109;
+  }
+
+  #tn-preloader .stage svg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    display:block;
+  }
+
+  /* sin capa de fondo: arranca en blanco. Cada trazo (letra) aparece con fade-in + un pequeño
+     desplazamiento de abajo hacia arriba, en cascada de izquierda a derecha. El SVG dibuja la "N"
+     de Node en 3 trazos separados, por eso el orden de nth-child no es 1-a-1 con el orden visual:
+     se reordena a mano abajo (T-r-i-a-l-N-N-N-o-d-e). */
+  #tn-preloader .fill path{
+    opacity:0;
+    animation:tnLetterIn .55s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  #tn-preloader .fill path:nth-child(1){animation-delay:0ms;}     /* T */
+  #tn-preloader .fill path:nth-child(2){animation-delay:70ms;}    /* r */
+  #tn-preloader .fill path:nth-child(3){animation-delay:140ms;}   /* i */
+  #tn-preloader .fill path:nth-child(4){animation-delay:210ms;}   /* a */
+  #tn-preloader .fill path:nth-child(5){animation-delay:280ms;}   /* l */
+  #tn-preloader .fill path:nth-child(9){animation-delay:350ms;}   /* N (trazo 1) */
+  #tn-preloader .fill path:nth-child(11){animation-delay:420ms;}  /* N (trazo 2) */
+  #tn-preloader .fill path:nth-child(10){animation-delay:490ms;}  /* N (trazo 3) */
+  #tn-preloader .fill path:nth-child(6){animation-delay:560ms;}   /* o */
+  #tn-preloader .fill path:nth-child(7){animation-delay:630ms;}   /* d */
+  #tn-preloader .fill path:nth-child(8){animation-delay:700ms;}   /* e */
+  #tn-preloader .fill path:nth-child(n+12){animation-delay:900ms;} /* subtítulo: entra junto, ya de fondo */
+
+  @keyframes tnLetterIn{
+    0%   { opacity:0; transform:translateY(12px); }
+    100% { opacity:1; transform:translateY(0); }
+  }
+
+  /* respeta a quien apaga animaciones: muestra el logo entero y quieto, sin cascada */
+  @media (prefers-reduced-motion: reduce){
+    #tn-preloader .fill path{ animation:none; opacity:1; transform:none; }
+  }
+
+#tn-preloader{transition:opacity .5s ease;}
+#tn-preloader.tn-hide{opacity:0;pointer-events:none;}
+
+/* el fondo del CTA vive en la clase, no inline, para que :hover/:active del CSS puedan pisarlo */
+#tn .cta{background:var(--teal);color:#fff;}
+#tn .btn-ghost{background:#fff;}
+/* misma sombra que .form-card (pantalla 1), fija: no crece al hacer hover, solo se levanta un poco */
+#tn .rcard{box-shadow:0 1px 3px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.03);}
+#tn .navbtn{border:none;background:transparent;border-radius:8px;transition:background .15s;}
+@media (hover:hover){
+  #tn .cta:hover{background:#006A5D;}
+  #tn .rcard:hover{transform:translateY(-2px);}
+  #tn .btn-ghost:hover{background:#F4F4F4;}
+  #tn .navbtn:hover{background:#F1F1F1;}
+  #tn .crumb-link:hover{color:var(--teal);}
+  #tn .share-btn:hover{background:#F1F5F4;border-color:#CFE0DC;color:var(--teal);}
+  #tn .lang-dd-btn:hover{background:#EDEDED;}
+  #tn .lang-opt:hover:not(.active){background:#F1F1F1;}
+}
+/* selector de idioma como dropdown: un segmentado de 3 botones fijos no entraba en mobile
+   (back 44px + logo ~152px + segmentado ~178px > 390px de viewport). Un botón compacto en la
+   navbar abre un menú flotante con las 3 opciones. Misma lógica de idioma (lang / I18N / t() / render). */
+#tn .lang-dd{position:relative;margin-left:auto;flex:none;}
+#tn .lang-dd-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid #E8E8E8;background:#fff;color:#1A1A1A;font-size:12px;font-weight:600;letter-spacing:.02em;padding:8px 10px;min-height:36px;border-radius:8px;cursor:pointer;-webkit-appearance:none;appearance:none;line-height:1;transition:background .15s;}
+#tn .lang-dd-code{line-height:1;}
+#tn .lang-dd-chev{font-size:10px;color:#6B6B6B;transform:rotate(90deg);transition:transform .15s;}
+#tn .lang-dd-btn[aria-expanded="true"] .lang-dd-chev{transform:rotate(-90deg);}
+#tn .lang-dd-menu{position:absolute;top:calc(100% + 6px);right:0;margin:0;padding:4px;list-style:none;min-width:132px;background:#fff;border:1px solid #E2E2E2;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.14);z-index:60;}
+#tn .lang-opt{display:flex;align-items:center;gap:8px;width:100%;border:none;background:transparent;color:#1A1A1A;font-size:13px;font-weight:500;padding:9px 10px;border-radius:6px;cursor:pointer;-webkit-appearance:none;appearance:none;text-align:left;}
+#tn .lang-opt.active{background:#E6F1EF;color:#005E53;font-weight:600;}
+#tn .lang-opt .ti-check{margin-left:auto;color:#007567;font-size:13px;}
+#tn .lang-flag{display:block;width:18px;height:13px;border-radius:2px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.08);flex:none;}
+#tn .lang-flag svg{display:block;width:100%;height:100%;}
+/* breadcrumbs arriba del título de cada página, solo desktop.
+   El back arrow queda solo en mobile (su display lo maneja el CSS, no inline). */
+#tn .nav-back{display:flex;align-items:center;justify-content:center;}
+#tn .page-crumbs{display:none;}
+@media (min-width:860px){
+  #tn .nav-back{display:none;}   /* redundante con las migas en desktop */
+  #tn .page-crumbs{display:flex;align-items:center;gap:8px;margin-bottom:16px;min-width:0;}
+  #tn .crumb{font-size:13px;line-height:1;max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #tn .crumb-link{border:none;background:transparent;color:#6B6B6B;cursor:pointer;padding:0;-webkit-appearance:none;appearance:none;transition:color .15s;}
+  #tn .crumb-cur{color:#1A1A1A;font-weight:600;}
+  #tn .crumb-sep{color:#B7B7B7;font-size:14px;flex:none;}
+}
+/* fila superior del detalle + botón compartir */
+#tn .detail-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:2px;}
+#tn .share-btn{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid #E2E2E2;color:#1A1A1A;font-size:13px;font-weight:600;padding:8px 13px;border-radius:8px;cursor:pointer;-webkit-appearance:none;appearance:none;transition:background .15s,border-color .15s,color .15s;flex:none;}
+#tn .share-btn svg{display:block;}
+/* panel de acción del detalle (responsable / CTA) */
+#tn .side-div{height:1px;background:#E8E8E8;margin:14px 0;}
+#tn .side-note{font-size:12px;color:#6B6B6B;line-height:1.5;margin-top:12px;text-align:center;}
+/* toast de "enlace copiado" */
+#tn #tn-toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,14px);background:#1A2B28;color:#fff;font-size:13px;font-weight:500;padding:11px 18px;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.22);opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;z-index:1200;}
+#tn #tn-toast.show{opacity:1;transform:translate(-50%,0);}
+/* botón flotante "volver arriba" en las pantallas legales (documentos largos) */
+#tn .scroll-top-btn{position:fixed;right:20px;bottom:24px;width:48px;height:48px;border-radius:50%;background:var(--teal);color:#fff;border:none;display:flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18);z-index:40;-webkit-appearance:none;appearance:none;}
+#tn .scroll-top-btn i{transform:rotate(-90deg);display:block;}
+@media (hover:hover){ #tn .scroll-top-btn:hover{background:#006A5D;} }
+
+/* nota de preselección sobre el % de compatibilidad */
+#tn .res-nota{display:flex;align-items:flex-start;gap:7px;font-size:13px;color:#6B6B6B;line-height:1.5;margin:-8px 0 18px;}
+#tn .res-nota .ti{color:#007567;font-size:9px;margin-top:5px;flex:none;}
+/* botón de idioma a 44px de alto (mínimo táctil recomendado) */
+#tn .lang-dd-btn{min-height:44px;}
+/* mapa de ubicación del centro (mock offline + botón a Google Maps) */
+#tn .map-mock{position:relative;height:170px;border-radius:12px;overflow:hidden;border:1px solid #E2E2E2;}
+#tn .map-svg{position:absolute;inset:0;width:100%;height:100%;display:block;}
+#tn .map-pin{position:absolute;top:50%;left:50%;transform:translate(-50%,-100%);color:#007567;font-size:30px;line-height:1;filter:drop-shadow(0 3px 3px rgba(0,0,0,.28));}
+#tn .map-pin::after{content:"";position:absolute;left:50%;bottom:-3px;transform:translateX(-50%);width:13px;height:5px;border-radius:50%;background:rgba(0,0,0,.20);}
+#tn .map-loc{position:absolute;left:10px;bottom:10px;max-width:82%;background:#fff;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:600;color:#1A1A1A;box-shadow:0 2px 6px rgba(0,0,0,.14);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+#tn .map-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;}
+#tn .map-note{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#6B6B6B;}
+#tn .map-note .ti{font-size:9px;color:#007567;}
+#tn .map-btn{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid #E2E2E2;color:#007567;font-size:13px;font-weight:600;padding:8px 13px;border-radius:8px;cursor:pointer;-webkit-appearance:none;appearance:none;flex:none;transition:background .15s,border-color .15s;}
+#tn .map-btn .ti-chevron-right{font-size:12px;}
+@media (hover:hover){ #tn .map-btn:hover{background:#F1F5F4;border-color:#CFE0DC;} }
+/* carga real de archivo/foto (input con capture) */
+#tn .up-dropzone{display:block;}
+#tn .up-dropzone:focus-within{border-color:var(--teal);box-shadow:0 0 0 3px var(--tint);}
+
+/* pantalla de análisis: radar (pulsos expansivos) + ADN formándose en el centro */
+#tn .an-stage{position:relative;width:80px;height:80px;display:flex;align-items:center;justify-content:center;}
+#tn .an-ring{position:absolute;width:100%;height:100%;border-radius:50%;border:2px solid var(--teal);animation:anPing 3.2s cubic-bezier(0,.5,.5,1) infinite;}
+#tn .an-ring:nth-child(2){animation-delay:1.6s;}
+#tn .an-core{position:relative;width:56px;height:56px;border-radius:50%;background:var(--tint);display:flex;align-items:center;justify-content:center;}
+#tn .an-dna path{stroke-dasharray:1;stroke-dashoffset:1;animation:anDnaDraw 3.6s ease-in-out infinite;}
+#tn .an-dna line{opacity:0;animation:anRung 3.6s ease-in-out infinite;}
+#tn .an-dna line:nth-child(1){animation-delay:1.05s;}
+#tn .an-dna line:nth-child(2){animation-delay:1.25s;}
+#tn .an-dna line:nth-child(3){animation-delay:1.45s;}
+#tn .an-dna line:nth-child(4){animation-delay:1.65s;}
+@keyframes anPing{0%{transform:scale(.6);opacity:.9;}100%{transform:scale(1.5);opacity:0;}}
+@keyframes anDnaDraw{0%{stroke-dashoffset:1;opacity:1;}30%{stroke-dashoffset:0;opacity:1;}70%{stroke-dashoffset:0;opacity:1;}88%{opacity:0;}100%{stroke-dashoffset:1;opacity:0;}}
+@keyframes anRung{0%{opacity:0;transform:scaleX(0);}40%{opacity:1;transform:scaleX(1);}75%{opacity:1;transform:scaleX(1);}90%{opacity:0;}100%{opacity:0;transform:scaleX(0);}}
+@media (prefers-reduced-motion: reduce){
+  #tn .an-ring{animation:none;opacity:0;}
+  #tn .an-dna path{animation:none;stroke-dashoffset:0;opacity:1;}
+  #tn .an-dna line{animation:none;opacity:1;transform:none;}
+}
+</style>
+
+<!-- Shell responsivo: topbar full-width con la barra centrada; el contenido vive en #viewport (contenedor centrado, max 960px). -->
+<div id="tn">
+  <div id="tn-mesh" aria-hidden="true"></div>
+  <div id="tn-topbar"><div id="navbar"></div></div>
+  <div id="stage">
+    <div id="viewport"></div>
+    <div id="modalLayer"></div>
+  </div>
+  <div id="tn-footer"></div>
+</div>
+
+<script>
+(function(){
+  var vp = document.getElementById('viewport');
+  var nav = document.getElementById('navbar');
+  var modalLayer = document.getElementById('modalLayer');
+  var footerEl = document.getElementById('tn-footer');
+  var tnRoot = document.getElementById('tn'); // togglea la clase is-scrollable (ver render())
+  var backMap = { intake:null, analyze:'intake', results:'intake', detail:'results', terms:'intake', privacy:'intake' };
+  var uploaded = false;
+  var uploadedName = 'historia-clinica.pdf'; // nombre real si se sube/suelta un archivo
+  var uploadedPreview = null;                // dataURL del preview si el archivo es una imagen (foto)
+  var formData = {};    // valores tipeados (se preservan al mostrar errores)
+  var formErrors = {};  // errores de validación actuales
+  var applied = {};     // ensayos a los que ya te postulaste
+
+  // idioma actual. El selector de la navbar lo cambia; persiste entre pantallas.
+  var lang = 'es';
+
+  // diccionario de UI. t(k) cae a ES si falta una clave.
+  var I18N = {
+    es:{
+      nav_inicio:'Inicio', nav_ensayos:'Ensayos', nav_analizando:'Analizando', nav_volver:'Volver',
+      crumbs_aria:'Migas de pan', idioma_aria:'Idioma',
+      intake_badge:'Encontrá tu estudio',
+      intake_h1_a:'Encontrá ensayos', intake_h1_b:'para tu caso',
+      intake_sub:'Cargá tus datos y tu historia clínica. Cruzamos la info con estudios activos y te mostramos los que encajan.',
+      step1:'Cargás tu historia clínica, una sola vez.',
+      step2:'La cruzamos con los estudios activos.',
+      step3:'Te contactamos si aparece uno compatible.',
+      f_nombre:'Nombre y apellido', f_nombre_ph:'Tu nombre y apellido',
+      f_contacto:'Tu teléfono o WhatsApp', f_contacto_ph:'Ej: 11 2345 6789',
+      f_hc:'Historia clínica',
+      up_title:'Tocá para subir tu historia clínica', up_hint:'Sacá una foto o elegí un PDF (o arrastralo acá)',
+      up_loaded:'cargado', up_remove:'Quitar archivo',
+      consent:'Al continuar, autorizás que usemos tu historia clínica solo para buscarte estudios compatibles. Nada más.',
+      cta_buscar:'Buscar ensayos compatibles',
+      cifrado:'Nadie más ve tus datos',
+      req:'obligatorio',
+      err_nombre:'Ingresá tu nombre y apellido.',
+      err_contacto_empty:'Dejá tu teléfono o WhatsApp así te podemos contactar.',
+      err_contacto_bad:'Poné un teléfono válido (o un mail si preferís).',
+      err_upload:'Adjuntá tu historia clínica para continuar.',
+      consent_modal_title:'¿Nos autorizás a usar tu historia clínica?', consent_accept:'Continuar',
+      analyzing:'Analizando tu historia clínica…',
+      an1:'Leyendo el archivo', an2:'Detectando diagnósticos', an3:'Cruzando con la base de ensayos', an4:'Calculando compatibilidad',
+      res_h1:'Ensayos para vos',
+      res_sub:'Ordenados por compatibilidad con tu historia.',
+      compat:'% compatible',
+      postulado:'Postulado',
+      empty_h:'Por ahora no hay ensayos para tu caso',
+      empty_p:'Se suman estudios nuevos seguido. Dejá tus datos y te avisamos cuando aparezca uno compatible.',
+      empty_cta:'Volver al inicio',
+      req_titulo:'Requisitos del estudio',
+      implica:'Qué implica participar',
+      detail_note:'La participación es voluntaria y podés dejar el estudio cuando quieras. Un profesional revisa si cumplís los requisitos y te explica todo antes de arrancar.',
+      responsable:'Responsable',
+      cta_postular:'Postularme',
+      ya_postulado:'Ya te postulaste',
+      compartir:'Compartir',
+      enlace_copiado:'Enlace copiado',
+      side_note:'Postularte no te compromete a nada, y es sin costo.',
+      cf_title:'¿Confirmás tu postulación?',
+      cf_b1a:'Te vas a postular al estudio ', cf_b1b:'.',
+      cf_b2a:'Un profesional te va a contactar a ', cf_b2b:' para verificar si cumplís los requisitos.',
+      cf_cancel:'Cancelar', cf_confirm:'Confirmar',
+      sc_title:'Listo, quedaste postulado',
+      sc_ba:'Un profesional te va a contactar a ', sc_bb:' y te explica si cumplís los requisitos antes de arrancar.',
+      sc_done:'Entendido',
+      contacto_fb:'el dato que dejaste',
+      proceso_titulo:'Cómo sigue el proceso',
+      proceso_p1:'Revisamos tu postulación y tu historia clínica (entre 3 y 5 días hábiles).',
+      proceso_p2:'Un profesional del estudio te contacta para confirmar si cumplís los requisitos.',
+      proceso_p3:'Si corresponde, coordinamos juntos la primera visita al centro.',
+      proceso_p4:'Podés dejar el estudio cuando quieras, sin tener que dar explicaciones.',
+      faq_titulo:'Preguntas frecuentes',
+      faq_q1:'¿Tiene costo participar?',
+      faq_a1:'No. La participación en estudios clínicos no tiene costo para vos.',
+      faq_q2:'¿Qué pasa con mis datos?',
+      faq_a2:'Tu historia clínica se usa solo para evaluar la compatibilidad con este estudio.',
+      faq_q3:'¿Puedo dejar de participar?',
+      faq_a3:'Sí, en cualquier momento y sin tener que dar explicaciones.',
+      res_nota:'El porcentaje es una preselección — un profesional confirma después si cumplís los requisitos.',
+      donde:'Dónde queda', ver_mapa:'Ver en el mapa', mapa_nota:'Ubicación aproximada de la zona',
+      footer_terms:'Términos de uso', footer_privacy:'Política de Privacidad',
+      volver_arriba:'Volver arriba'
+    },
+    en:{
+      nav_inicio:'Home', nav_ensayos:'Trials', nav_analizando:'Analyzing', nav_volver:'Back',
+      crumbs_aria:'Breadcrumb', idioma_aria:'Language',
+      intake_badge:'Find your trial',
+      intake_h1_a:'Find trials', intake_h1_b:'for your case',
+      intake_sub:'Add your details and medical history. We match them against active studies and show you the ones that fit.',
+      step1:'Upload your medical history, just once.',
+      step2:'We match it against active studies.',
+      step3:'We reach out if a compatible one comes up.',
+      f_nombre:'Full name', f_nombre_ph:'Your first and last name',
+      f_contacto:'Your phone or WhatsApp', f_contacto_ph:'e.g. 11 2345 6789',
+      f_hc:'Medical history',
+      up_title:'Tap to upload your medical history', up_hint:'Take a photo or pick a PDF (or drag it here)',
+      up_loaded:'uploaded', up_remove:'Remove file',
+      consent:'By continuing, you authorize us to use your medical history only to find compatible studies for you. Nothing else.',
+      cta_buscar:'Find compatible trials',
+      cifrado:'No one else sees your data',
+      req:'required',
+      err_nombre:'Enter your full name.',
+      err_contacto_empty:'Leave your phone or WhatsApp so we can reach you.',
+      err_contacto_bad:'Enter a valid phone number (or an email if you prefer).',
+      err_upload:'Attach your medical history to continue.',
+      consent_modal_title:'Do you authorize us to use your medical history?', consent_accept:'Continue',
+      analyzing:'Analyzing your medical history…',
+      an1:'Reading the file', an2:'Detecting diagnoses', an3:'Matching against the trial database', an4:'Calculating compatibility',
+      res_h1:'Trials for you',
+      res_sub:'Sorted by how well they match your history.',
+      compat:'% match',
+      postulado:'Applied',
+      empty_h:'No trials for your case right now',
+      empty_p:'New studies are added often. Leave your details and we\u2019ll let you know when a compatible one shows up.',
+      empty_cta:'Back to start',
+      req_titulo:'Study requirements',
+      implica:'What taking part involves',
+      detail_note:'Taking part is voluntary and you can leave the study whenever you want. A professional checks whether you meet the requirements and explains everything before you start.',
+      responsable:'Sponsor',
+      cta_postular:'Apply',
+      ya_postulado:'Already applied',
+      compartir:'Share',
+      enlace_copiado:'Link copied',
+      side_note:'Applying commits you to nothing, and it\u2019s free.',
+      cf_title:'Confirm your application?',
+      cf_b1a:'You\u2019re about to apply to the study ', cf_b1b:'.',
+      cf_b2a:'A professional will contact you at ', cf_b2b:' to check whether you meet the requirements.',
+      cf_cancel:'Cancel', cf_confirm:'Confirm',
+      sc_title:'Done, you\u2019ve applied',
+      sc_ba:'A professional will contact you at ', sc_bb:' and explain whether you meet the requirements before you start.',
+      sc_done:'Got it',
+      contacto_fb:'the contact you left',
+      proceso_titulo:'What happens next',
+      proceso_p1:'We review your application and medical history (3 to 5 business days).',
+      proceso_p2:'A study professional contacts you to confirm whether you meet the requirements.',
+      proceso_p3:'If it applies, we coordinate your first visit to the center together.',
+      proceso_p4:'You can leave the study whenever you want, with no need to explain why.',
+      faq_titulo:'Frequently asked questions',
+      faq_q1:'Does it cost anything to take part?',
+      faq_a1:'No. Taking part in clinical trials is free for you.',
+      faq_q2:'What happens with my data?',
+      faq_a2:'Your medical history is only used to check compatibility with this trial.',
+      faq_q3:'Can I stop taking part?',
+      faq_a3:'Yes, at any time, with no need to explain why.',
+      res_nota:'The percentage is a pre-screening — a professional later confirms whether you meet the requirements.',
+      donde:'Where it is', ver_mapa:'View on the map', mapa_nota:'Approximate area location',
+      footer_terms:'Terms of use', footer_privacy:'Privacy Policy',
+      volver_arriba:'Back to top'
+    },
+    pt:{
+      nav_inicio:'Início', nav_ensayos:'Estudos', nav_analizando:'Analisando', nav_volver:'Voltar',
+      crumbs_aria:'Trilha de navegação', idioma_aria:'Idioma',
+      intake_badge:'Encontre seu estudo',
+      intake_h1_a:'Encontre estudos', intake_h1_b:'para o seu caso',
+      intake_sub:'Envie seus dados e seu histórico clínico. Cruzamos as informações com estudos ativos e mostramos os que combinam.',
+      step1:'Você envia seu histórico clínico, uma única vez.',
+      step2:'Cruzamos com os estudos ativos.',
+      step3:'Entramos em contato se surgir um compatível.',
+      f_nombre:'Nome completo', f_nombre_ph:'Seu nome e sobrenome',
+      f_contacto:'Seu telefone ou WhatsApp', f_contacto_ph:'Ex: 11 2345 6789',
+      f_hc:'Histórico clínico',
+      up_title:'Toque para enviar seu histórico', up_hint:'Tire uma foto ou escolha um PDF (ou arraste aqui)',
+      up_loaded:'enviado', up_remove:'Remover arquivo',
+      consent:'Ao continuar, você autoriza usarmos seu histórico clínico apenas para buscar estudos compatíveis. Nada mais.',
+      cta_buscar:'Buscar estudos compatíveis',
+      cifrado:'Ninguém mais vê seus dados',
+      req:'obrigatório',
+      err_nombre:'Informe seu nome completo.',
+      err_contacto_empty:'Deixe seu telefone ou WhatsApp para podermos contatar você.',
+      err_contacto_bad:'Coloque um telefone válido (ou um e-mail, se preferir).',
+      err_upload:'Anexe seu histórico clínico para continuar.',
+      consent_modal_title:'Você autoriza o uso do seu histórico clínico?', consent_accept:'Continuar',
+      analyzing:'Analisando seu histórico clínico…',
+      an1:'Lendo o arquivo', an2:'Detectando diagnósticos', an3:'Cruzando com a base de estudos', an4:'Calculando a compatibilidade',
+      res_h1:'Estudos para você',
+      res_sub:'Ordenados pela compatibilidade com seu histórico.',
+      compat:'% compatível',
+      postulado:'Inscrito',
+      empty_h:'Por enquanto não há estudos para o seu caso',
+      empty_p:'Novos estudos entram com frequência. Deixe seus dados e avisamos quando aparecer um compatível.',
+      empty_cta:'Voltar ao início',
+      req_titulo:'Requisitos do estudo',
+      implica:'O que significa participar',
+      detail_note:'A participação é voluntária e você pode sair do estudo quando quiser. Um profissional verifica se você cumpre os requisitos e explica tudo antes de começar.',
+      responsable:'Responsável',
+      cta_postular:'Quero participar',
+      ya_postulado:'Você já se inscreveu',
+      compartir:'Compartilhar',
+      enlace_copiado:'Link copiado',
+      side_note:'Se inscrever não compromete você a nada, e é gratuito.',
+      cf_title:'Confirmar sua inscrição?',
+      cf_b1a:'Você vai se inscrever no estudo ', cf_b1b:'.',
+      cf_b2a:'Um profissional vai entrar em contato pelo ', cf_b2b:' para verificar se você cumpre os requisitos.',
+      cf_cancel:'Cancelar', cf_confirm:'Confirmar',
+      sc_title:'Pronto, você se inscreveu',
+      sc_ba:'Um profissional vai entrar em contato pelo ', sc_bb:' e explica se você cumpre os requisitos antes de começar.',
+      sc_done:'Entendi',
+      contacto_fb:'o contato que você deixou',
+      proceso_titulo:'Como o processo continua',
+      proceso_p1:'Revisamos sua inscrição e seu histórico clínico (de 3 a 5 dias úteis).',
+      proceso_p2:'Um profissional do estudo entra em contato para confirmar se você cumpre os requisitos.',
+      proceso_p3:'Se for o caso, combinamos juntos a primeira visita ao centro.',
+      proceso_p4:'Você pode sair do estudo quando quiser, sem precisar explicar o motivo.',
+      faq_titulo:'Perguntas frequentes',
+      faq_q1:'Participar tem custo?',
+      faq_a1:'Não. Participar de estudos clínicos não tem custo para você.',
+      faq_q2:'O que acontece com meus dados?',
+      faq_a2:'Seu histórico clínico é usado apenas para avaliar a compatibilidade com este estudo.',
+      faq_q3:'Posso deixar de participar?',
+      faq_a3:'Sim, a qualquer momento, sem precisar dar explicações.',
+      res_nota:'A porcentagem é uma pré-seleção — um profissional confirma depois se você atende aos requisitos.',
+      donde:'Onde fica', ver_mapa:'Ver no mapa', mapa_nota:'Localização aproximada da área',
+      footer_terms:'Termos de uso', footer_privacy:'Política de Privacidade',
+      volver_arriba:'Voltar ao topo'
+    }
+  };
+  function t(k){ var v = I18N[lang] && I18N[lang][k]; return v!=null ? v : I18N.es[k]; }
+
+  var LOGO = `<svg height="34" viewBox="0 0 182 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block">
+<path d="M0.280151 6.25635V0.4018H22.9993V6.25635H14.8017V29.2843H8.47779V6.25635H0.280151Z" fill="#020001"/>
+<path d="M37.15 9.76908V15.4285H35.2372C31.802 15.4285 29.7331 16.9507 29.7331 20.8147V29.2843H23.7215V9.80811H29.3817L29.694 12.6964C30.5138 10.7839 32.2314 9.49587 34.8468 9.49587C35.5495 9.49587 36.3302 9.57393 37.15 9.76908Z" fill="#020001"/>
+<path d="M43.1567 7.3032C41.2439 7.3032 39.7215 5.78101 39.7215 3.86852C39.7215 1.95604 41.2439 0.472884 43.1567 0.472884C45.0304 0.472884 46.5529 1.95604 46.5529 3.86852C46.5529 5.78101 45.0304 7.3032 43.1567 7.3032ZM40.1899 29.2843V9.76908H46.2015V29.2843H40.1899Z" fill="#020001"/>
+<path d="M56.6059 29.3578C52.4681 29.3578 49.8917 26.9379 49.8917 23.1129C49.8917 19.5221 52.4291 17.2974 57.1134 16.9461L62.5785 16.5168V16.2046C62.5785 14.2921 61.4074 13.2773 59.2604 13.2773C56.7231 13.2773 55.3568 14.253 55.3568 16.0094H50.3601C50.3601 11.599 53.9905 8.71074 59.5727 8.71074C65.233 8.71074 68.434 11.8722 68.434 17.4535V29.2843H63.125L62.7347 26.2744C62.1101 28.0698 59.5337 29.3578 56.6059 29.3578ZM58.7139 24.9083C61.0171 24.9083 62.6175 23.7765 62.6175 21.5517V20.4979L59.5727 20.7711C56.9573 21.0053 56.0204 21.5908 56.0204 22.8397C56.0204 24.2448 56.8792 24.9083 58.7139 24.9083Z" fill="#020001"/>
+<path d="M78.7572 29.2843H72.7456V0.433854H78.7572V29.2843Z" fill="#020001"/>
+<path d="M112.901 18.9812C112.901 12.8144 117.429 8.67718 123.675 8.67718C129.882 8.67718 134.41 12.8144 134.41 18.9812C134.41 25.148 129.882 29.2462 123.675 29.2462C117.429 29.2462 112.901 25.148 112.901 18.9812ZM118.952 18.9422C118.952 21.9085 120.864 23.86 123.675 23.86C126.447 23.86 128.359 21.9085 128.359 18.9422C128.359 16.0149 126.447 14.0634 123.675 14.0634C120.864 14.0634 118.952 16.0149 118.952 18.9422Z" fill="#34A491"/>
+<path d="M146.093 29.3578C140.472 29.3578 136.841 25.3767 136.841 19.2099C136.841 13.0041 140.55 8.71074 146.483 8.71074C148.903 8.71074 151.207 9.6865 152.339 11.1306V0H158.35V29.2843H152.69L152.378 26.3525C151.324 28.1479 148.903 29.3578 146.093 29.3578ZM147.537 23.8545C150.348 23.8545 152.3 21.903 152.3 18.9757C152.3 16.0484 150.348 14.0969 147.537 14.0969C144.688 14.0969 142.892 16.0875 142.892 18.9757C142.892 21.864 144.688 23.8545 147.537 23.8545Z" fill="#34A491"/>
+<path d="M171.805 29.3578C165.91 29.3578 161.694 25.0645 161.694 19.0538C161.694 12.9651 165.793 8.71074 171.688 8.71074C177.816 8.71074 181.642 12.7309 181.642 19.0928V20.615L167.472 20.6931C167.823 23.2691 169.267 24.479 171.922 24.479C174.186 24.479 175.786 23.6594 176.216 22.2543H181.72C181.017 26.5866 177.153 29.3578 171.805 29.3578ZM171.727 13.5895C169.345 13.5895 168.018 14.6434 167.55 16.9852H175.669C175.669 14.9166 174.147 13.5895 171.727 13.5895Z" fill="#34A491"/>
+<path d="M108.663 0.433859H102.12V8.59968L108.663 18.9168V0.433859Z" fill="#34A491"/>
+<path d="M83.5961 29.2132H90.139V21.0351L83.5961 10.8147V29.2132Z" fill="#34A491"/>
+<path d="M102.058 29.2132H108.663L90.2012 0.433859H83.5961L102.058 29.2132Z" fill="#34A491"/>
+<path d="M111.645 35.2625C111.878 34.8567 112.365 34.5242 113.011 34.5242C113.997 34.5242 114.744 35.2558 114.744 36.3933C114.744 37.5241 113.991 38.289 113.011 38.289C112.345 38.289 111.871 37.9564 111.645 37.5573V38.2292H111.038V33.3069H111.645V35.2625ZM114.124 36.3933C114.124 35.5352 113.558 35.0496 112.884 35.0496C112.225 35.0496 111.645 35.5552 111.645 36.3999C111.645 37.258 112.225 37.7569 112.884 37.7569C113.558 37.7569 114.124 37.2514 114.124 36.3933Z" fill="#020001"/>
+<path d="M116.928 37.5374L118.061 34.584H118.688L116.489 39.9453H115.862L116.582 38.1893L115.109 34.584H115.782L116.928 37.5374Z" fill="#020001"/>
+<path d="M121.061 36.5197V33.5929H121.667V36.5263C121.667 37.3777 122.127 37.7436 122.814 37.7436C123.5 37.7436 123.953 37.3777 123.953 36.5263V33.5929H124.56V36.5197C124.56 37.7236 123.767 38.2757 122.807 38.2757C121.847 38.2757 121.061 37.7236 121.061 36.5197Z" fill="#020001"/>
+<path d="M128.244 38.2292V36.1671C128.244 35.4221 127.837 35.043 127.224 35.043C126.604 35.043 126.178 35.4288 126.178 36.2137V38.2292H125.571V34.584H126.178V35.1029C126.418 34.7237 126.858 34.5175 127.351 34.5175C128.197 34.5175 128.844 35.0363 128.844 36.0807V38.2292H128.244Z" fill="#020001"/>
+<path d="M134.11 33.5863V34.0851H132.218V35.635H133.91V36.1339H132.218V37.7303H134.11V38.2292H131.611V33.5863H134.11Z" fill="#020001"/>
+<path d="M137.7 38.2292V36.1671C137.7 35.4221 137.294 35.043 136.681 35.043C136.061 35.043 135.634 35.4288 135.634 36.2137V38.2292H135.028V34.584H135.634V35.1029C135.874 34.7237 136.314 34.5175 136.807 34.5175C137.654 34.5175 138.3 35.0363 138.3 36.0807V38.2292H137.7Z" fill="#020001"/>
+<path d="M141.917 37.2381C141.917 37.8367 141.39 38.289 140.584 38.289C139.731 38.289 139.131 37.8234 139.091 37.1582H139.717C139.751 37.5108 140.064 37.7768 140.577 37.7768C141.057 37.7768 141.324 37.5374 141.324 37.2381C141.324 36.4265 139.164 36.8988 139.164 35.5419C139.164 34.9831 139.691 34.5242 140.504 34.5242C141.31 34.5242 141.843 34.9565 141.883 35.6683H141.277C141.25 35.3024 140.97 35.0363 140.484 35.0363C140.037 35.0363 139.771 35.2492 139.771 35.5419C139.771 36.4066 141.89 35.9343 141.917 37.2381Z" fill="#020001"/>
+<path d="M142.546 36.3933C142.546 35.2558 143.299 34.5242 144.279 34.5242C144.959 34.5242 145.425 34.87 145.639 35.2492V34.584H146.252V38.2292H145.639V37.5507C145.419 37.9431 144.945 38.289 144.272 38.289C143.299 38.289 142.546 37.5241 142.546 36.3933ZM145.639 36.3999C145.639 35.5552 145.065 35.0496 144.399 35.0496C143.732 35.0496 143.166 35.5352 143.166 36.3933C143.166 37.2514 143.732 37.7569 144.399 37.7569C145.065 37.7569 145.639 37.258 145.639 36.3999Z" fill="#020001"/>
+<path d="M148.663 37.5374L149.796 34.584H150.422L148.223 39.9453H147.596L148.316 38.1893L146.843 34.584H147.516L148.663 37.5374Z" fill="#020001"/>
+<path d="M154.497 36.3999C154.497 37.5573 153.664 38.289 152.625 38.289C151.592 38.289 150.805 37.5573 150.805 36.3999C150.805 35.2492 151.618 34.5242 152.651 34.5242C153.691 34.5242 154.497 35.2492 154.497 36.3999ZM151.425 36.3999C151.425 37.3245 151.992 37.7569 152.625 37.7569C153.258 37.7569 153.878 37.3245 153.878 36.3999C153.878 35.482 153.271 35.0496 152.645 35.0496C152.005 35.0496 151.425 35.482 151.425 36.3999Z" fill="#020001"/>
+<path d="M157.678 35.2558C157.898 34.87 158.378 34.5242 159.044 34.5242C160.024 34.5242 160.777 35.2558 160.777 36.3933C160.777 37.5241 160.024 38.289 159.044 38.289C158.378 38.289 157.905 37.9298 157.678 37.5573V39.9586H157.072V34.584H157.678V35.2558ZM160.157 36.3933C160.157 35.5352 159.591 35.0496 158.918 35.0496C158.258 35.0496 157.678 35.5552 157.678 36.3999C157.678 37.258 158.258 37.7569 158.918 37.7569C159.591 37.7569 160.157 37.2514 160.157 36.3933Z" fill="#020001"/>
+<path d="M161.349 36.3933C161.349 35.2558 162.102 34.5242 163.081 34.5242C163.761 34.5242 164.228 34.87 164.441 35.2492V34.584H165.054V38.2292H164.441V37.5507C164.221 37.9431 163.748 38.289 163.075 38.289C162.102 38.289 161.349 37.5241 161.349 36.3933ZM164.441 36.3999C164.441 35.5552 163.868 35.0496 163.201 35.0496C162.535 35.0496 161.968 35.5352 161.968 36.3933C161.968 37.2514 162.535 37.7569 163.201 37.7569C163.868 37.7569 164.441 37.258 164.441 36.3999Z" fill="#020001"/>
+<path d="M166.685 36.247V38.2292H166.079V34.584H166.685V35.176C166.892 34.7703 167.285 34.5175 167.865 34.5175V35.1428H167.705C167.125 35.1428 166.685 35.4022 166.685 36.247Z" fill="#020001"/>
+<path d="M168.339 36.3933C168.339 35.2558 169.092 34.5242 170.071 34.5242C170.751 34.5242 171.218 34.87 171.431 35.2492V34.584H172.044V38.2292H171.431V37.5507C171.211 37.9431 170.738 38.289 170.065 38.289C169.092 38.289 168.339 37.5241 168.339 36.3933ZM171.431 36.3999C171.431 35.5552 170.858 35.0496 170.191 35.0496C169.525 35.0496 168.958 35.5352 168.958 36.3933C168.958 37.2514 169.525 37.7569 170.191 37.7569C170.858 37.7569 171.431 37.258 171.431 36.3999Z" fill="#020001"/>
+<path d="M174.846 38.2292V33.6262H175.499L177.205 37.431L178.911 33.6262H179.557V38.2292H178.951V34.7969L177.418 38.2292H176.992L175.452 34.7902V38.2292H174.846Z" fill="#020001"/>
+<path d="M180.586 38.2292V34.584H181.192V38.2292H180.586ZM180.119 33.859L181.539 33.0275V33.553L180.119 34.3113V33.859Z" fill="#020001"/>
+</svg>`;
+
+  // icono compartir en SVG inline (no está en el subset de la webfont; evita re-subsetear)
+  var SHARE_IC = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M12 3v13"/><path d="M8 7l4-4 4 4"/></svg>';
+
+  // banderas minimalistas para el selector (SVG inline, sin escudos/sol).
+  // ES = Argentina (el contenido y el español son rioplatenses). EN = Reino Unido. PT = Brasil (pt-BR).
+  var FLAGS = {
+    es:'<svg viewBox="0 0 18 12" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="12" fill="#74ACDF"/><rect y="4" width="18" height="4" fill="#fff"/></svg>',
+    us:'<svg viewBox="0 0 20 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="14" fill="#B31942"/><rect y="2" width="20" height="2" fill="#fff"/><rect y="6" width="20" height="2" fill="#fff"/><rect y="10" width="20" height="2" fill="#fff"/><rect width="9" height="8" fill="#0A3161"/></svg>',
+    pt:'<svg viewBox="0 0 20 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="14" fill="#009C3B"/><polygon points="10,1.5 18.5,7 10,12.5 1.5,7" fill="#FFDF00"/><circle cx="10" cy="7" r="3" fill="#002776"/></svg>'
+  };
+
+  // breadcrumbs (solo se ven en desktop por CSS) + back (solo mobile por CSS)
+  function crumbLink(label, act){ return '<button class="crumb crumb-link" data-act="'+act+'">'+label+'</button>'; }
+  function crumbCur(label){ return '<span class="crumb crumb-cur" aria-current="page">'+label+'</span>'; }
+  function crumbSep(){ return '<span class="crumb-sep" aria-hidden="true">›</span>'; }
+  // breadcrumbs arriba del título de cada pantalla (solo results/detail; en inicio no sirve). Desktop-only por CSS.
+  function pageCrumbs(screen, arg){
+    var p=[];
+    if(screen==='results'){ p.push(crumbLink(t('nav_inicio'),'intake')); p.push(crumbSep()); p.push(crumbCur(t('nav_ensayos'))); }
+    else if(screen==='detail'){
+      var tr=trials.filter(function(x){return x.id==arg;})[0];
+      p.push(crumbLink(t('nav_inicio'),'intake')); p.push(crumbSep());
+      p.push(crumbLink(t('nav_ensayos'),'results')); p.push(crumbSep());
+      p.push(crumbCur(tr?tr.title:''));
+    }
+    else if(screen==='terms'){ p.push(crumbLink(t('nav_inicio'),'intake')); p.push(crumbSep()); p.push(crumbCur(t('footer_terms'))); }
+    else if(screen==='privacy'){ p.push(crumbLink(t('nav_inicio'),'intake')); p.push(crumbSep()); p.push(crumbCur(t('footer_privacy'))); }
+    else { return ''; }
+    return '<nav class="page-crumbs" aria-label="'+t('crumbs_aria')+'">'+p.join('')+'</nav>';
+  }
+
+  // selector de idioma como dropdown: un botón compacto (bandera + código + chevron) que abre un
+  // menú flotante, así entra en mobile. Misma lógica de idioma: lang / I18N / t() / TRIALS / render().
+  var langMenuOpen = false;
+  function langDropdown(){
+    var codes=['es','en','pt'];
+    var flagCode={ es:'es', en:'us', pt:'pt' };  // EN muestra EEUU
+    var opts = codes.map(function(c){
+      var sel = c===lang;
+      return '<li role="none"><button type="button" class="lang-opt'+(sel?' active':'')+'" role="menuitemradio" aria-checked="'+sel+'" data-act="setLang" data-arg="'+c+'" lang="'+c+'"><span class="lang-flag" aria-hidden="true">'+FLAGS[flagCode[c]]+'</span><span>'+c.toUpperCase()+'</span>'+(sel?'<i class="ti ti-check" aria-hidden="true"></i>':'')+'</button></li>';
+    }).join('');
+    var menu = langMenuOpen
+      ? '<ul class="lang-dd-menu" role="menu" aria-label="'+t('idioma_aria')+'">'+opts+'</ul>'
+      : '';
+    return '<div class="lang-dd">'+
+      '<button type="button" class="lang-dd-btn" data-act="toggleLangMenu" aria-haspopup="true" aria-expanded="'+langMenuOpen+'" aria-label="'+t('idioma_aria')+'">'+
+        '<span class="lang-flag" aria-hidden="true">'+FLAGS[flagCode[lang]]+'</span><span class="lang-dd-code">'+lang.toUpperCase()+'</span>'+
+        '<i class="ti ti-chevron-right lang-dd-chev" aria-hidden="true"></i>'+
+      '</button>'+menu+
+    '</div>';
+  }
+
+  function renderNav(screen, arg){
+    var back = backMap[screen];
+    // el display lo maneja el CSS (.nav-back): flex en mobile, none en desktop (no inline, que le ganaba a la regla).
+    var backBtn = back
+      ? '<button class="navbtn nav-back" data-act="'+back+'" aria-label="'+t('nav_volver')+'" style="width:44px;height:44px;color:#1A1A1A;font-size:20px;cursor:pointer;align-items:center;justify-content:center;-webkit-appearance:none;appearance:none;flex:none;margin-left:-8px;"><i class="ti ti-arrow-left"></i></button>'
+      : '';
+    nav.innerHTML = backBtn
+      + '<div class="nav-logo" style="display:flex;align-items:center;flex:none;">'+LOGO+'</div>'
+      + langDropdown();
+  }
+
+  function renderFooter(){
+    footerEl.innerHTML = '<div class="footer-in">'+
+      '<span>© 2026 Trialtech SL. Todos los derechos reservados. - v2.0.1</span>'+
+      '<div class="footer-links">'+
+        '<button type="button" data-act="terms">'+t('footer_terms')+'</button>'+
+        '<button type="button" data-act="privacy">'+t('footer_privacy')+'</button>'+
+      '</div>'+
+    '</div>';
+  }
+
+  // el CTA no trae background inline, así el hover/active del CSS toma efecto
+  function cta(label, act, arg){
+    var a = (arg!=null) ? ' data-arg="'+arg+'"' : '';
+    return '<button class="cta" data-act="'+act+'"'+a+' style="display:block;width:100%;box-sizing:border-box;-webkit-appearance:none;appearance:none;font-weight:700;font-size:15px;line-height:1;padding:15px;border:none;border-radius:8px;cursor:pointer;transition:background .15s,box-shadow .15s,transform .1s;">'+label+'</button>';
+  }
+  // <label for> real, aria-required, type/inputmode/autocomplete, value preservado y estado de error
+  function field(id, label, ph, req, opts){
+    opts = opts || {};
+    var star = req ? ' <span style="color:var(--teal);" aria-hidden="true">*</span><span class="sr-only"> '+t('req')+'</span>' : '';
+    var attrs = '';
+    if(opts.type) attrs += ' type="'+opts.type+'"';
+    if(opts.inputmode) attrs += ' inputmode="'+opts.inputmode+'"';
+    if(opts.autocomplete) attrs += ' autocomplete="'+opts.autocomplete+'"';
+    if(req) attrs += ' aria-required="true"';
+    var val = opts.value ? ' value="'+String(opts.value).replace(/"/g,'&quot;')+'"' : '';
+    var errCls = opts.error ? ' err' : '';
+    var errMsg = opts.error ? '<div class="fielderr" id="'+id+'-err" role="alert">'+opts.error+'</div>' : '';
+    var descBy = opts.error ? ' aria-describedby="'+id+'-err"' : '';
+    return '<div style="margin-bottom:16px;">'+
+      '<label for="'+id+'" style="display:block;font-size:13px;font-weight:500;color:var(--ink);margin-bottom:6px;">'+label+star+'</label>'+
+      '<input id="'+id+'" class="tnin'+errCls+'"'+attrs+val+descBy+' placeholder="'+ph+'"/>'+
+      errMsg+'</div>';
+  }
+  function sectionTitle(x){ return '<div style="display:flex;align-items:center;gap:10px;margin:0 0 13px;"><span class="scr-eyebrow" style="white-space:nowrap;">'+x+'</span><span style="flex:1;height:1px;background:#E8E8E8;"></span></div>'; }
+  function compBar(pct){ return '<div style="height:6px;border-radius:999px;background:#E6F1EF;overflow:hidden;"><div style="height:100%;width:'+pct+'%;background:#007567;border-radius:999px;"></div></div>'; }
+  function pill(txt){ return '<span class="scr-pill">'+txt+'</span>'; }
+  function matchBadge(pct){ return '<span class="matchb">'+pct+t('compat')+'</span>'; }
+  function countBadge(n){ return '<span class="countb">'+n+'</span>'; }
+
+  // datos de los 3 ensayos por idioma. EN/PT = primer pase, sujeto a revisión.
+  // (Traducir estos strings NO es inventar data médica: es la misma info en otro idioma.)
+  var TRIALS = {
+    es:[
+      { id:1, match:94, title:'Control glucémico en diabetes tipo 2', cond:'Diabetes tipo 2', phase:'Fase III', loc:'CABA · Hospital de Clínicas', sponsor:'Red de investigación metabólica', dur:'6 meses', crit:['Diagnóstico hace más de 1 año','Entre 40 y 70 años','Sin tratamiento con insulina'], info:['Participación sin costo','1 visita al centro por mes','Se cubren los viáticos'] },
+      { id:2, match:81, title:'Nuevo antihipertensivo de toma diaria', cond:'Hipertensión', phase:'Fase II', loc:'Córdoba · Centro cardiovascular', sponsor:'Instituto cardiológico', dur:'4 meses', crit:['Presión no controlada con la medicación actual','Sin eventos cardíacos previos','Mayor de 45 años'], info:['Participación sin costo','Controles cada 3 semanas','Estudios clínicos incluidos'] },
+      { id:3, match:73, title:'Terapia biológica para artritis reumatoide', cond:'Artritis reumatoide', phase:'Fase III', loc:'Rosario · Unidad reumatológica', sponsor:'Grupo de estudios articulares', dur:'8 meses', crit:['Diagnóstico confirmado','Actividad moderada a alta','Sin biológicos previos'], info:['Participación sin costo','1 visita cada 15 días','Medicación provista'] }
+    ],
+    en:[
+      { id:1, match:94, title:'Glycemic control in type 2 diabetes', cond:'Type 2 diabetes', phase:'Phase III', loc:'CABA · Hospital de Clínicas', sponsor:'Metabolic research network', dur:'6 months', crit:['Diagnosed more than 1 year ago','Between 40 and 70 years old','Not on insulin treatment'], info:['Free participation','1 visit to the center per month','Travel costs covered'] },
+      { id:2, match:81, title:'New once-daily antihypertensive', cond:'Hypertension', phase:'Phase II', loc:'Córdoba · Cardiovascular center', sponsor:'Cardiology institute', dur:'4 months', crit:['Blood pressure not controlled with current medication','No prior cardiac events','Over 45 years old'], info:['Free participation','Check-ups every 3 weeks','Clinical tests included'] },
+      { id:3, match:73, title:'Biologic therapy for rheumatoid arthritis', cond:'Rheumatoid arthritis', phase:'Phase III', loc:'Rosario · Rheumatology unit', sponsor:'Joint studies group', dur:'8 months', crit:['Confirmed diagnosis','Moderate to high activity','No prior biologics'], info:['Free participation','1 visit every 15 days','Medication provided'] }
+    ],
+    pt:[
+      { id:1, match:94, title:'Controle glicêmico no diabetes tipo 2', cond:'Diabetes tipo 2', phase:'Fase III', loc:'CABA · Hospital de Clínicas', sponsor:'Rede de pesquisa metabólica', dur:'6 meses', crit:['Diagnóstico há mais de 1 ano','Entre 40 e 70 anos','Sem tratamento com insulina'], info:['Participação sem custo','1 visita ao centro por mês','Deslocamento coberto'] },
+      { id:2, match:81, title:'Novo anti-hipertensivo de dose diária', cond:'Hipertensão', phase:'Fase II', loc:'Córdoba · Centro cardiovascular', sponsor:'Instituto de cardiologia', dur:'4 meses', crit:['Pressão não controlada com a medicação atual','Sem eventos cardíacos anteriores','Maior de 45 anos'], info:['Participação sem custo','Controles a cada 3 semanas','Exames clínicos incluídos'] },
+      { id:3, match:73, title:'Terapia biológica para artrite reumatoide', cond:'Artrite reumatoide', phase:'Fase III', loc:'Rosario · Unidade reumatológica', sponsor:'Grupo de estudos articulares', dur:'8 meses', crit:['Diagnóstico confirmado','Atividade moderada a alta','Sem biológicos anteriores'], info:['Participação sem custo','1 visita a cada 15 dias','Medicação fornecida'] }
+    ]
+  };
+  var trials = TRIALS[lang];
+
+  function uploadSlot(){
+    if(uploaded){
+      // si el archivo es una imagen, muestro el preview real de la foto; si no, el ícono de archivo
+      var thumb = uploadedPreview
+        ? '<div style="flex:none;width:44px;height:44px;border-radius:8px;overflow:hidden;border:1px solid #E2E2E2;"><img src="'+uploadedPreview+'" alt="" style="width:100%;height:100%;object-fit:cover;display:block;"></div>'
+        : '<div style="flex:none;width:36px;height:36px;border-radius:8px;background:#E6F1EF;color:#007567;display:flex;align-items:center;justify-content:center;font-size:17px;"><i class="ti ti-file-check"></i></div>';
+      return '<div class="up-filled" style="display:flex;align-items:center;gap:11px;padding:12px;border:1px solid #E2E2E2;border-radius:8px;background:#fff;">'+
+        thumb+
+        '<div style="flex:1;min-width:0;"><div style="font-size:13px;color:#1A1A1A;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+uploadedName+'</div><div style="font-size:11px;color:#6B6B6B;">'+t('up_loaded')+'</div></div>'+
+        '<button class="navbtn" data-act="removeUpload" aria-label="'+t('up_remove')+'" style="flex:none;width:40px;height:40px;color:#6B6B6B;font-size:17px;cursor:pointer;-webkit-appearance:none;appearance:none;"><i class="ti ti-x"></i></button></div>';
+    }
+    // input real con capture. En el celular abre la cámara (capture="environment"); en desktop, el explorador.
+    // Es un <label> que envuelve el input, así tocar cualquier parte de la zona lo dispara. No sube nada (prototipo).
+    return '<label id="hc-slot-btn" class="up-dropzone" for="hc-file" style="width:100%;box-sizing:border-box;padding:18px;border:1.5px dashed #CFE0DC;border-radius:8px;text-align:center;background:#F6FAF9;cursor:pointer;">'+
+      '<div style="width:38px;height:38px;border-radius:8px;background:#E6F1EF;color:#007567;display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto;"><i class="ti ti-file-upload"></i></div>'+
+      '<div style="font-size:13px;color:#1A1A1A;margin-top:8px;font-weight:500;">'+t('up_title')+'</div>'+
+      '<div style="font-size:11px;color:#6B6B6B;margin-top:2px;">'+t('up_hint')+'</div>'+
+      '<input id="hc-file" name="hc-file" type="file" accept="image/*,application/pdf" capture="environment" class="sr-only">'+
+    '</label>';
+  }
+
+  function screenIntake(){
+    var hcErr = formErrors.upload ? '<div class="fielderr" role="alert" style="margin-bottom:12px;">'+formErrors.upload+'</div>' : '';
+    return '<div class="intake-grid">'+
+      '<div class="intake-pitch">'+
+        '<div>'+
+          '<span class="pitch-badge">'+t('intake_badge')+'</span>'+
+          '<h1 class="pitch-title">'+t('intake_h1_a')+'<br class="pitch-br"> '+t('intake_h1_b')+'</h1>'+
+          '<p class="pitch-sub">'+t('intake_sub')+'</p>'+
+        '</div>'+
+        '<ul class="pitch-steps">'+
+          '<li><span class="st-ic"><i class="ti ti-file-upload"></i></span> '+t('step1')+'</li>'+
+          '<li><span class="st-ic"><i class="ti ti-search"></i></span> '+t('step2')+'</li>'+
+          '<li><span class="st-ic"><i class="ti ti-circle-check"></i></span> '+t('step3')+'</li>'+
+        '</ul>'+
+      '</div>'+
+      '<div class="form-card">'+
+        '<div class="name-phone-row">'+
+          field('f-nombre',t('f_nombre'),t('f_nombre_ph'),true,{autocomplete:'name',value:formData.nombre,error:formErrors.nombre})+
+          field('f-contacto',t('f_contacto'),t('f_contacto_ph'),true,{inputmode:'text',autocomplete:'on',value:formData.contacto,error:formErrors.contacto})+
+        '</div>'+
+        '<label for="hc-file" style="display:block;font-size:13px;font-weight:500;color:#1A1A1A;margin-bottom:6px;">'+t('f_hc')+' <span style="color:#007567;" aria-hidden="true">*</span><span class="sr-only"> '+t('req')+'</span></label>'+
+        '<div id="uploadSlot" class="up-wrap'+(uploaded?' is-filled':'')+'" style="margin-bottom:'+(hcErr?'6px':'18px')+';">'+uploadSlot()+'</div>'+ hcErr +
+        cta(t('cta_buscar'),'analyze')+
+        '<div style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:#6B6B6B;margin-top:14px;"><i class="ti ti-lock"></i> '+t('cifrado')+'</div>'+
+      '</div>'+
+    '</div>';
+  }
+
+  function screenAnalyzing(){
+    setTimeout(function(){ if(current==='analyze') render('results'); }, 3600);
+    return '<div class="centered-screen" style="min-height:470px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:32px;">'+
+      '<div class="an-stage" aria-hidden="true">'+
+        '<div class="an-ring"></div><div class="an-ring"></div>'+
+        '<div class="an-core">'+
+          '<svg class="an-dna" viewBox="0 0 24 24" width="30" height="30">'+
+            '<path d="M6,3 C14,3 14,9 12,12 C10,15 6,15 6,21" fill="none" stroke="#007567" stroke-width="1.6" stroke-linecap="round" pathLength="1"/>'+
+            '<path d="M18,3 C10,3 10,9 12,12 C14,15 18,15 18,21" fill="none" stroke="#60A9A0" stroke-width="1.6" stroke-linecap="round" pathLength="1"/>'+
+            '<g stroke="#007567" stroke-width="1.4" stroke-linecap="round">'+
+              '<line x1="6" y1="3" x2="18" y2="3"/>'+
+              '<line x1="9" y1="8" x2="15" y2="8"/>'+
+              '<line x1="9" y1="16" x2="15" y2="16"/>'+
+              '<line x1="6" y1="21" x2="18" y2="21"/>'+
+            '</g>'+
+          '</svg>'+
+        '</div>'+
+      '</div>'+
+      '<div><div style="font-size:16px;font-weight:600;color:#1A1A1A;">'+t('analyzing')+'</div>'+
+      '<div id="step" style="font-size:13px;color:#6B6B6B;margin-top:5px;min-height:18px;">'+t('an1')+'</div></div></div>';
+  }
+
+  // estado vacío (0 resultados). Hoy no se dispara: los 3 ensayos están hardcodeados.
+  function screenEmpty(){
+    return '<div class="centered-screen" style="min-height:440px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 8px;">'+
+      '<div style="width:60px;height:60px;border-radius:50%;background:#E6F1EF;display:flex;align-items:center;justify-content:center;color:#007567;font-size:26px;margin-bottom:16px;"><i class="ti ti-search-off"></i></div>'+
+      '<div style="font-size:16px;font-weight:600;color:#1A1A1A;margin-bottom:8px;">'+t('empty_h')+'</div>'+
+      '<p style="font-size:13px;color:#6B6B6B;line-height:1.55;margin:0 0 20px;">'+t('empty_p')+'</p>'+
+      cta(t('empty_cta'),'goHome')+
+    '</div>';
+  }
+
+  function screenResults(){
+    if(!trials.length) return screenEmpty();
+    var cards = trials.map(function(x){
+      var tail = applied[x.id]
+        ? '<span class="rc-tail rc-applied"><i class="ti ti-check"></i> '+t('postulado')+'</span>'
+        : '<span class="rc-tail rc-chev"><i class="ti ti-chevron-right"></i></span>';
+      // la sombra base vive en .rcard (CSS), no inline, así el hover puede sobreescribirla
+      return '<div class="rcard" data-act="detail" data-arg="'+x.id+'" role="button" tabindex="0" aria-label="'+x.title+', '+x.match+t('compat')+'" style="background:#fff;border-radius:12px;cursor:pointer;display:flex;flex-direction:column;">'+
+        '<div class="rc-top"><span class="rc-cond">'+x.cond+'</span>'+matchBadge(x.match)+'</div>'+
+        '<div class="rc-title">'+x.title+'</div>'+compBar(x.match)+
+        '<div class="rc-meta"><span><i class="ti ti-flask"></i> '+x.phase+'</span><span><i class="ti ti-map-pin"></i> '+x.loc.split(' · ')[0]+'</span>'+tail+'</div></div>';
+    }).join('');
+    return pageCrumbs('results')+
+      '<div class="res-screen scr">'+
+      '<div class="res-head"><h1 class="res-h1">'+t('res_h1')+'</h1>'+countBadge(trials.length)+'</div>'+
+      '<p class="res-sub">'+t('res_sub')+'</p>'+
+      /* el % es una preselección, no una confirmación: aclaración cerca del listado */
+      '<p class="res-nota"><i class="ti ti-point"></i> '+t('res_nota')+'</p>'+
+      '<div class="results-grid">'+cards+'</div></div>';
+  }
+
+  function screenDetail(id){
+    var x = trials.filter(function(y){return y.id==id;})[0];
+    var crit = x.crit.map(function(c){ return '<li class="scr-li"><span style="color:#007567;margin-top:1px;flex:none;"><i class="ti ti-circle-check"></i></span><span>'+c+'</span></li>'; }).join('');
+    var info = x.info.map(function(c){ return '<li class="scr-li"><span style="color:#60A9A0;margin-top:2px;flex:none;font-size:9px;"><i class="ti ti-point"></i></span><span>'+c+'</span></li>'; }).join('');
+    // si ya te postulaste, el CTA queda bloqueado
+    var actionBtn = applied[x.id]
+      ? '<button class="cta" disabled aria-disabled="true" style="display:block;width:100%;box-sizing:border-box;background:#60A9A0;color:#fff;font-weight:700;font-size:15px;line-height:1;padding:15px;border:none;border-radius:8px;opacity:.7;cursor:default;">'+t('ya_postulado')+'</button>'
+      : cta(t('cta_postular'),'apply',x.id);
+    return pageCrumbs('detail', id)+
+    '<div class="detail-grid scr">'+
+    '<div class="detail-main">'+
+      // fila superior con badge + botón compartir
+      '<div class="detail-top">'+
+        matchBadge(x.match)+
+        '<button class="share-btn" data-act="share" data-arg="'+x.id+'" aria-label="'+t('compartir')+'">'+SHARE_IC+'<span>'+t('compartir')+'</span></button>'+
+      '</div>'+
+      '<h1 class="scr-h1">'+x.title+'</h1>'+
+      '<div style="margin-bottom:15px;max-width:520px;">'+compBar(x.match)+'</div>'+
+      '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;">'+pill('<i class="ti ti-flask"></i> '+x.phase)+pill('<i class="ti ti-clock"></i> '+x.dur)+pill('<i class="ti ti-map-pin"></i> '+x.loc)+'</div>'+
+      '<div class="card" style="padding:18px 16px;">'+
+        // "Requisitos" no afirma que el usuario los cumpla; lo confirma el profesional
+        sectionTitle(t('req_titulo'))+'<ul style="list-style:none;padding:0;margin:0 0 20px;">'+crit+'</ul>'+
+        sectionTitle(t('implica'))+'<ul style="list-style:none;padding:0;margin:0 0 18px;">'+info+'</ul>'+
+        '<div class="scr-note" style="background:#F6FAF9;border:1px solid #E6F1EF;border-radius:12px;padding:12px;">'+t('detail_note')+'</div>'+
+      '</div>'+
+      // mapa: ubicación aproximada (mock offline, no pin exacto: centros ficticios) + botón a Google Maps
+      '<div class="card" style="padding:18px 16px;margin-top:16px;">'+
+        sectionTitle(t('donde'))+
+        '<div class="map-mock" role="img" aria-label="'+x.loc+'">'+
+          '<svg class="map-svg" viewBox="0 0 320 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'+
+            '<rect width="320" height="160" fill="#E8F0EE"/>'+
+            '<path d="M0 28 Q80 48 160 30 T320 34 L320 0 L0 0 Z" fill="#DCE9F0"/>'+
+            '<rect x="20" y="92" width="82" height="54" rx="10" fill="#D3E6DC"/>'+
+            '<g stroke="#FFFFFF" stroke-width="7" stroke-linecap="round"><line x1="-10" y1="62" x2="330" y2="74"/><line x1="-10" y1="122" x2="330" y2="130"/><line x1="64" y1="-10" x2="92" y2="170"/><line x1="212" y1="-10" x2="236" y2="170"/></g>'+
+            '<g stroke="#E7E7E7" stroke-width="2"><line x1="-10" y1="62" x2="330" y2="74"/><line x1="64" y1="-10" x2="92" y2="170"/><line x1="212" y1="-10" x2="236" y2="170"/></g>'+
+          '</svg>'+
+          '<span class="map-pin"><i class="ti ti-map-pin"></i></span>'+
+          '<span class="map-loc">'+x.loc+'</span>'+
+        '</div>'+
+        '<div class="map-row">'+
+          '<span class="map-note"><i class="ti ti-point"></i> '+t('mapa_nota')+'</span>'+
+          '<button class="map-btn" data-act="openMap" data-arg="'+x.id+'">'+t('ver_mapa')+' <i class="ti ti-chevron-right"></i></button>'+
+        '</div>'+
+      '</div>'+
+      // contenido extra genérico (no por-ensayo, no inventa datos médicos) para que el detalle
+      // tenga alto real de contenido y se note el scroll con el panel del CTA fijo al lado
+      '<div class="card" style="padding:18px 16px;margin-top:16px;">'+
+        sectionTitle(t('proceso_titulo'))+
+        '<ol class="scr-body" style="margin:0;padding:0 0 0 18px;">'+
+          '<li style="margin-bottom:10px;">'+t('proceso_p1')+'</li>'+
+          '<li style="margin-bottom:10px;">'+t('proceso_p2')+'</li>'+
+          '<li style="margin-bottom:10px;">'+t('proceso_p3')+'</li>'+
+          '<li style="margin-bottom:0;">'+t('proceso_p4')+'</li>'+
+        '</ol>'+
+      '</div>'+
+      '<div class="card" style="padding:18px 16px;margin-top:16px;">'+
+        sectionTitle(t('faq_titulo'))+
+        '<div style="margin-bottom:14px;"><div class="scr-body" style="font-weight:600;margin-bottom:4px;">'+t('faq_q1')+'</div><div class="scr-note">'+t('faq_a1')+'</div></div>'+
+        '<div style="margin-bottom:14px;"><div class="scr-body" style="font-weight:600;margin-bottom:4px;">'+t('faq_q2')+'</div><div class="scr-note">'+t('faq_a2')+'</div></div>'+
+        '<div><div class="scr-body" style="font-weight:600;margin-bottom:4px;">'+t('faq_q3')+'</div><div class="scr-note">'+t('faq_a3')+'</div></div>'+
+      '</div>'+
+    '</div>'+
+    // panel de acción: responsable -> divisor -> CTA -> nota corta que baja fricción
+    '<aside class="detail-side">'+
+      '<div class="card side-action" style="padding:16px;">'+
+        '<div class="scr-eyebrow" style="margin-bottom:5px;">'+t('responsable')+'</div>'+
+        '<div class="scr-body">'+x.sponsor+'</div>'+
+        '<div class="side-div"></div>'+
+        actionBtn+
+        '<div class="side-note">'+t('side_note')+'</div>'+
+      '</div>'+
+    '</aside>'+
+    '</div>';
+  }
+
+  // pantallas legales (términos/privacidad): texto real de las páginas vigentes de Trialtech
+  // (app.trialnode.io/es/terms y /es/privacy), reformateado a la estética del sitio. Queda en
+  // español siempre, aunque la UI esté en EN/PT — no se tradujo a pedido explícito ("por ahora").
+  function legalH2(x){ return '<h2>'+x+'</h2>'; }
+  function legalH3(x){ return '<h3>'+x+'</h3>'; }
+  function legalP(x){ return '<p>'+x+'</p>'; }
+  function legalStrong(x){ return '<p style="font-weight:700;">'+x+'</p>'; }
+  function legalList(items){ return '<ul>'+items.map(function(i){ return '<li>'+i+'</li>'; }).join('')+'</ul>'; }
+  function legalRow(label, value){ return '<div class="legal-row"><div class="legal-row-label">'+label+'</div><div>'+value+'</div></div>'; }
+  function scrollTopBtn(){ return '<button type="button" class="scroll-top-btn" data-act="scrollTop" aria-label="'+t('volver_arriba')+'"><i class="ti ti-chevron-right" aria-hidden="true"></i></button>'; }
+
+  function screenTerms(){
+    return pageCrumbs('terms')+
+    '<div class="scr" style="max-width:720px;margin:0 auto;">'+
+      '<h1 class="scr-h1">'+t('footer_terms')+'</h1>'+
+      '<div class="card legal-doc" style="padding:20px 18px;">'+
+        legalP('El acceso a y la utilización de esta página web están sometidos a las siguientes disposiciones. En el caso de que usted no esté de acuerdo con ellas, por favor, no utilice esta página web; usando la página web, usted declara su consentimiento con estos términos de uso. Esta página web ha sido creada y es administrada por Trialtech SL. Nos reservamos el derecho a modificar completa o parcialmente nuestra página web y los términos de uso generales en cualquier momento a nuestra discreción sin anuncio previo. Esto le obliga a informarse con regularidad sobre las posibles modificaciones. La utilización continuada de la página web después de la publicación de las modificaciones se considera como aceptación y consentimiento de las modificaciones.')+
+        legalP('Trialtech SL es denominada de aquí en adelante como "Un Ensayo para Mí".')+
+        legalP('Presuponiendo su cumplimiento de estos términos de uso, Un Ensayo para Mí le garantiza un derecho personal, sencillo e intransferible para acceder y utilizar la página web.')+
+        legalH2('Contenidos')+
+        legalP('Toda la información, documentos y presentaciones (de aquí en adelante, "Contenidos") publicados en esta página web son propiedad de Un Ensayo para Mí o de sus licenciatarios. El permiso para su utilización se concederá siempre que (i) aparezca el sello de copyright en todas las copias, (ii) el uso de la información sirva sólo para fines personales y no se realice ninguna utilización comercial, (iii) no se modifiquen de ninguna manera los contenidos y (iv) todas las presentaciones de la página web sólo se usen conjuntamente con los textos correspondientes.')+
+        legalH2('Su utilización de la página web')+
+        legalP('En el caso de que usted tenga menos de 18 años, puede utilizar la página web y los servicios de Un Ensayo para Mí sólo con ayuda de sus padres o de sus tutores.')+
+        legalP('No le está permitido tomar medidas que sobrecarguen o perjudiquen la infraestructura de la página web o de los sistemas unidos a ella de manera desproporcionada o sean una carga excesiva. Se compromete a utilizar la página web de tal manera que no perjudique su correcto funcionamiento, en concreto, a no utilizar aparatos, software o programas que puedan provocar ese tipo de perjuicios.')+
+        legalP('Tiene prohibido utilizar la página web o los servicios ahí prestados para fines ilegales o prohibidos por estos términos de uso, o que sirvan para actividades que violen los derechos de Un Ensayo para Mí o de terceros.')+
+        legalP('Tiene prohibido hacerse pasar por otra persona, dar información incorrecta sobre su condición personal o social, o engañar de cualquier otro modo. Usted es responsable del contenido correcto de toda la información que envía a Un Ensayo para Mí, así como de no violar los derechos de terceros.')+
+        legalP('Tiene prohibido utilizar la contraseña y/o la información de registro de otra persona sin su permiso explícito. Se compromete a conservar la confidencialidad de su contraseña e información de registro, y a informar de inmediato a Un Ensayo para Mí de cualquier uso indebido. Se le puede hacer responsable de cualquier daño ocasionado por el uso indebido de su contraseña y/o información de registro.')+
+        legalH2('Marcas y derechos de autor')+
+        legalP('Todas las marcas, diseños y logos mencionados en esta página web son propiedad de Un Ensayo para Mí, a menos que se designen como derechos de terceros o sean reconocibles como tales de manera especial. Nada de lo que hay en esta página web se puede tomar, sin el permiso explícito por escrito de Un Ensayo para Mí, como concesión de licencias o derechos para el uso de marcas, diseños y logos. La utilización no autorizada de estas marcas, diseños y logos está expresamente prohibida y supone una violación de los derechos de autor, de marca u otros derechos de protección.')+
+        legalH2('Protección de datos')+
+        legalP('La declaración de protección de datos de Un Ensayo para Mí rige para el uso de esta página web y las disposiciones ahí contenidas son objeto de estos términos de uso. Usando la página web, usted reconoce que las transmisiones a través de internet nunca son completamente privadas o seguras, y que todos los mensajes e información que envía a esta página web pueden ser leídos o interceptados, incluso cuando hay un aviso especial de que la transmisión está encriptada.')+
+        legalP('En relación con los datos no personales, el usuario está de acuerdo con que Un Ensayo para Mí almacene esta información y la utilice para fines estadísticos u otros fines comerciales mencionados.')+
+        legalH2('Limitación de responsabilidad')+
+        legalP('Un Ensayo para Mí ha recopilado la información que usted encuentra en esta página web de fuentes internas y externas con cuidado profesional. No obstante, Un Ensayo para Mí no se responsabiliza — ni explícita ni implícitamente — de la integridad o corrección de la información de esta página web, ni del mantenimiento de su funcionamiento. La información puede estar anticuada; debería comprobarla antes de utilizarla, sea de la manera que sea. Si precisa de consejo o indicaciones especiales en relación con los servicios de Un Ensayo para Mí, póngase en contacto con nosotros.')+
+        legalP('Con la utilización de esta página web, usted se declara de acuerdo con acceder por su propia cuenta y riesgo a esta página web y a sus contenidos. Ni Un Ensayo para Mí ni terceros implicados en su creación, producción o transmisión son responsables de los perjuicios que puedan ocasionarse por el acceso, la imposibilidad de acceso, la utilización, la imposibilidad de utilización, o por confiar en la información contenida en esta página web.')+
+        legalP('La utilización de esta página web, así como la participación en ensayos clínicos, no son ningún sustituto de un diagnóstico y un tratamiento por parte de un médico y/o farmacéutico. Antes de decidirse a participar en un ensayo, consulte por favor a su médico y/o farmacéutico. Un Ensayo para Mí no es responsable de las decisiones que usted tome sólo a partir de la información dada aquí, sin consultar a su médico o farmacéutico.')+
+        legalH2('Páginas web de terceros proveedores / enlaces')+
+        legalP('Esta página web también contiene enlaces o referencias a páginas web de terceros. Estos enlaces no representan ninguna aprobación de sus contenidos por parte de Un Ensayo para Mí, que no se responsabiliza de la disponibilidad ni del contenido de tales páginas, ni de cualesquiera daños que puedan ocasionarse por su uso. Se ponen a disposición del usuario sólo para su comodidad; el establecimiento de un enlace a esas páginas se realiza por cuenta propia del usuario.')+
+        legalH2('Usuarios internacionales')+
+        legalP('Esta página web se controla, gestiona y mantiene por Un Ensayo para Mí en Madrid, España, y está destinada al uso internacional. No obstante, Un Ensayo para Mí no garantiza que la información presentada sea correcta en todo el mundo, ni que rijan de la misma manera las normas y leyes locales. Si accede a esta página web y/o descarga contenidos, usted será responsable de que ello sea conforme a las leyes vigentes en su lugar de residencia.')+
+        legalH2('Derecho aplicable, ámbito de jurisdicción')+
+        legalP('Estos términos de uso están sujetos exclusivamente al derecho español. El ámbito de jurisdicción exclusivo para cualquier litigio relacionado con el uso de esta página web es el domicilio social de Un Ensayo para Mí, si el usuario es un comerciante o persona jurídica de derecho público, o no hay otro ámbito de jurisdicción general en el país; en los demás casos, el domicilio de la parte demandada será el ámbito de jurisdicción general.')+
+        legalP('En el caso de que alguna disposición de estos términos de uso sea inválida, esto no afectará a la validez del resto de los términos de uso.')+
+        '<div class="legal-meta">Última revisión: enero 2023</div>'+
+      '</div>'+
+    '</div>'+
+    scrollTopBtn();
+  }
+
+  function screenPrivacy(){
+    var piiRows = [
+      { title:'Datos de perfil del paciente',
+        datos:['Nombre y apellido','Domicilio','Número de teléfono de la casa o móvil','Diagnóstico','Números de cuenta del seguro médico','Historial médico','Exámenes médicos','Antecedentes y tratamientos','Informes de patología','Sus imágenes de diagnóstico','Su información y datos clínicos'],
+        usos:['Comunicarnos con usted y su médico sobre nuestros Servicios.','Registrarlo como paciente.','Recopilar datos para el perfil del paciente.','Interpretar los datos de los perfiles genéticos para proporcionar opciones de tratamiento en casos difíciles o complejos.','Determinar la elegibilidad del paciente para programas de asistencia destinados a cubrir ciertos costos de atención médica.','Presentar solicitudes a su aseguradora de salud para fines de reembolso.','Proporcionar los Servicios: orientación sobre opciones de tratamiento (desde normas de atención hasta tratamientos experimentales), datos clínicos que apoyen el uso de medicamentos no indicados en la etiqueta, ensayos clínicos apropiados para usted, y consultoría en bioinformática para apoyar las presentaciones de sus médicos en juntas de tumores.'],
+        base:['Estas actividades de tratamiento se realizan con base en los intereses legítimos de la Compañía, así como en la necesidad de cumplir con obligaciones contractuales o precontractuales relacionadas con los servicios ofrecidos, y en su caso, sobre la base del consentimiento explícito del titular. Las bases legales aplicables incluyen el artículo 6, apartado 1, letra f) del GDPR y del UK GDPR. En lo que respecta al tratamiento de datos relacionados con la salud, este se realiza únicamente con el consentimiento explícito del titular (artículo 9 del mismo reglamento), de conformidad con las normativas nacionales aplicables.',
+              'Asimismo, el tratamiento se ajusta al artículo 7, inciso IX de la LGPD de Brasil, el artículo 12 de la LFPDPPP de México y el artículo 6 de la Ley N.º 25.326 de Argentina, garantizando el cumplimiento de las regulaciones del EEE y Canadá conforme a las secciones 10 y 11 de nuestros Términos y Condiciones.']
+      },
+      { title:'Datos del proveedor de salud',
+        datos:['Nombre y apellido del médico','Dirección de correo electrónico del médico','Empleador del médico','Dirección del médico','Número de teléfono del médico','Notas del médico'],
+        usos:['Comunicarse con el proveedor de salud.','Registrarlo como personal del proveedor de atención médica, oncólogo experto o administrador de práctica que asiste a los pacientes.'],
+        base:['Estas actividades se realizan con base en los intereses legítimos de la Compañía y la necesidad de cumplir obligaciones contractuales relacionadas con los servicios ofrecidos: interactuar con prestadores de salud, registrar pacientes y brindarles los Servicios correspondientes, conforme al artículo 6.1.f) del GDPR/UK GDPR y, para datos de salud, al consentimiento explícito bajo el artículo 9.',
+              'Asimismo, se ajusta al artículo 7.IX de la LGPD de Brasil, el artículo 12 de la LFPDPPP de México y el artículo 6 de la Ley N.º 25.326 de Argentina.']
+      },
+      { title:'Datos del proveedor de servicios',
+        datos:['Nombre y apellido del proveedor de servicios','Dirección de correo electrónico del proveedor de servicios','Empleador del proveedor de servicios','Dirección del proveedor de servicios','Número de teléfono del proveedor de servicios','Producto de trabajo del proveedor de servicios'],
+        usos:['Comunicarse con el (potencial) proveedor de servicios.','Evaluar y aceptar a un (potencial) Proveedor de Servicios.','Concluir y ejecutar un acuerdo con el Proveedor de servicios.'],
+        base:['Estas actividades se realizan con base en los intereses legítimos de la Compañía, incluida la necesidad de gestionar nuestras relaciones con prestadores de servicios actuales o potenciales, en el marco de la operación y mejora continua de nuestros Servicios.']
+      }
+    ];
+    var retention = [
+      ['Datos del perfil del paciente','Diez años después de la recolección.'],
+      ['Datos de proveedores de salud','Cuatro años después del final de la relación.'],
+      ['Datos del proveedor de servicios','Cuatro años después del final de la relación.'],
+      ['Cookies','Según nuestro Aviso de cookies.'],
+      ['Datos de redes sociales','Diez años después de la recolección.']
+    ];
+    var derechos = [
+      ['Derecho de información','Puede exigir a Un Ensayo para Mí información sobre qué datos personales se están tratando, cuál es su fuente y con qué finalidad, y a qué destinatarios se transmiten. Las solicitudes electrónicas se contestan de manera electrónica.'],
+      ['Derecho de revocación','Puede revocar el tratamiento de sus datos cuando se apoye en intereses legítimos de la Compañía o de un tercero, o se realice en interés público, salvo que existan motivos legítimos que prevalezcan. También puede revocar específicamente el tratamiento con fines publicitarios.'],
+      ['Derecho de transmisión de datos','Puede reclamar sus datos personales en un formato estructurado y legible por ordenador, cuando el tratamiento se base en su consentimiento o en la ejecución de un contrato.'],
+      ['Derecho de corrección','Si sus datos personales son incorrectos o incompletos, puede exigir su rectificación o complementación.'],
+      ['Derecho de eliminación','Puede exigir la eliminación inmediata de sus datos cuando la finalidad del tratamiento haya cesado, se haya revocado el consentimiento, se haya opuesto al tratamiento, o la base legal sea inexistente.'],
+      ['Derecho de limitación del tratamiento','El tratamiento se puede limitar mientras se comprueba una corrección, cuando fue inicialmente ilícito, o cuando los datos ya no son necesarios pero usted los necesita para ejercer derechos legales.'],
+      ['Derecho de apelación','Tiene derecho a dirigirse a una autoridad supervisora con apelaciones relacionadas con el tratamiento de sus datos.'],
+      ['Derecho de revocación de un consentimiento','Tiene derecho a revocar en cualquier momento un consentimiento dado a Un Ensayo para Mí.']
+    ];
+    var autoridades = [
+      ['España','La Agencia Española de Protección de Datos. C/ Jorge Juan 6, 28001, Madrid. Tel.: +34 900 293 183.'],
+      ['Brasil','La Autoridade Nacional de Proteção de Dados (ANPD), conforme a la LGPD. SCS, Quadra 09, Lote C, Torre C, Brasília. CEP 70308-200.'],
+      ['México','El INAI, que supervisa la LFPDPPP. Insurgentes Sur 3211, Ciudad de México. Tel.: +52 (55) 5004 2400.'],
+      ['Argentina','La Agencia de Acceso a la Información Pública (AAIP), conforme a la Ley N.º 25.326. Av. Pte. Gral. Julio A. Roca 710, Piso 3, Buenos Aires. Tel.: +54 (11) 3988-3968.']
+    ];
+    var piiHtml = piiRows.map(function(r){
+      return legalH3(r.title)+legalList(r.datos)+legalP('Lo usamos para:')+legalList(r.usos)+r.base.map(legalP).join('');
+    }).join('');
+    var retentionHtml = retention.map(function(r){ return legalRow(r[0], r[1]); }).join('');
+    var derechosHtml = derechos.map(function(r){ return legalH3(r[0])+legalP(r[1]); }).join('');
+    var autoridadesHtml = autoridades.map(function(r){ return legalH3(r[0])+legalP(r[1]); }).join('');
+
+    return pageCrumbs('privacy')+
+    '<div class="scr" style="max-width:720px;margin:0 auto;">'+
+      '<h1 class="scr-h1">'+t('footer_privacy')+'</h1>'+
+      '<div class="legal-meta" style="margin:-6px 0 20px;">Última actualización: julio 2025</div>'+
+      '<div class="card legal-doc" style="padding:20px 18px;">'+
+        legalP('Esta Política de privacidad explica cómo recopilamos, usamos, protegemos y tratamos la información personal de las personas que utilizan nuestro sitio web, la aplicación móvil, la búsqueda de ensayos clínicos, la red de médicos derivadores, las soluciones de pago y otras funcionalidades ("Funcionalidades"), incluidos los pacientes ("usted"/"su"), sus médicos, personal de clínica, y los médicos expertos que evalúan su historia clínica. A partir de ahora, todo esto se señala como "Soluciones".')+
+        legalP('Las Soluciones son operadas por Trialtech SL, Biomay Brasil LTDA y Biomay Software SAS ("Compañía", "nosotros"). Un Ensayo para Mí es una empresa de análisis de datos que proporciona una segunda opinión médica y una potencial coincidencia de ensayos clínicos, evaluando la información clínica existente de un paciente y brindando consultoría a sus médicos para identificar las opciones de tratamiento que mejor se adapten a su perfil médico (conjuntamente, los "Servicios").')+
+        legalP('Esta Política cubre solo la información recopilada a través de las Soluciones, y no la de terceros que proporcionan productos y servicios relacionados (Proveedores de servicios) ni la de páginas web de terceros a las que enlazamos. No somos responsables del contenido ni de las prácticas de privacidad de otros sitios o servicios.')+
+        legalP('Hemos actualizado esta Política para garantizar el cumplimiento del Reglamento General de Protección de Datos (GDPR), la ley HIPAA y las legislaciones locales de protección de datos de los países donde operamos, incluyendo la LGPD de Brasil, la LFPDPPP de México, la Ley N.º 25.326 de Argentina y la CCPA de California.')+
+        legalStrong('LA COMPAÑÍA NO ES UN PROVEEDOR MÉDICO, NI ES UNA "ENTIDAD CUBIERTA" SUJETA A LAS LEYES QUE RIGEN LA PRIVACIDAD DE REGISTROS MÉDICOS, INCLUIDA LA LEY HIPAA.')+
+
+        legalH2('I. Información que recopilamos')+
+        legalH3('1. Información de identificación personal')+
+        legalP('Nuestras Soluciones y Proveedores de Servicios solo recopilan información de identificación personal ("PII") para los fines de la sección II: si se registra para una cita, se suscribe a un boletín, nos envía un mensaje por redes sociales o utiliza otras funciones. Puede visitar el sitio de forma anónima, pero eso puede impedirle acceder a ciertas funciones.')+
+        legalList(['Su perfil de paciente','Perfiles de proveedores de salud','Perfiles de proveedores de servicios'])+
+        legalH3('Información médica divulgada a la compañía')+
+        legalList(['A través de las API de las plataformas de Historia Clínica Electrónica.','A través de la plataforma de Historia Clínica Electrónica o páginas compartidas por usted.','A través de páginas de esa plataforma a las que acceden cuentas corporativas de la Compañía con su autorización.','A través de correos electrónicos, SMS, WhatsApp u otros medios de comunicación.'])+
+        legalH3('2. Información de salud protegida e información personal confidencial')+
+        legalP('Recopilaremos y almacenaremos información personal confidencial y datos sobre usted.')+
+        legalH3('3. Información de identificación no personal')+
+        legalP('Nuestro sitio web y proveedores también pueden recopilar información no identificable personalmente ("no PII") de pacientes, proveedores de salud, personal clínico y administradores de planes de salud: cualquier información que no se pueda asociar directa o indirectamente con usted.')+
+        legalH3('4. Cookies')+
+        legalP('Las cookies y tecnologías similares recopilan y almacenan PII y no PII cuando visita nuestras Soluciones o comparte contenido a través de redes sociales, por ejemplo:')+
+        legalList(['Cookies que identifican de forma única la sesión de su navegador y otros sitios visitados.','Tipo de navegador y sistema operativo.','Configuración de hardware.','Fecha y hora de la visita.','Páginas del sitio que visitó.','Página que lo remitió a la Compañía.','Páginas que visita después de salir del sitio.'])+
+        legalP('La base legal para el uso de cookies es el artículo 6.1.f) del GDPR, el artículo 7.IX de la LGPD, el artículo 14 de la LFPDPPP y los artículos 4 y 6 de la Ley N.º 25.326: nuestro interés legítimo en realizar evaluaciones estadísticas sobre el uso de la página y optimizar la oferta para los usuarios.')+
+        legalH3('5. Redes sociales')+
+        legalP('Podemos recopilar información a través de nuestra presencia en redes sociales. Si usa una red social para iniciar sesión en las Soluciones, la información de ese servicio puede ponerse a nuestra disposición, incluyendo su nombre de usuario y dirección de correo electrónico.')+
+        legalH3('6. Representantes de los pacientes')+
+        legalP('Un paciente puede dar autorización escrita, verbal, por correo electrónico, WhatsApp o SMS para que otra persona (por ejemplo, un abogado o pariente) haga una solicitud en su nombre. Podemos denegar el acceso si consideramos que quien autoriza no entendió el significado de la autorización.')+
+        legalH3('Parientes más cercanos')+
+        legalP('A pesar del uso generalizado de la frase "parientes más cercanos", esto no está definido ni tiene un estatus legal formal. Un pariente cercano no puede dar ni negar consentimiento en nombre de un paciente, ni tiene derecho a acceder a sus registros médicos.')+
+        legalH3('Tutores legales')+
+        legalP('Una persona designada por un tribunal para manejar los asuntos de un paciente que no puede hacerlo por sí mismo puede presentar una solicitud. El acceso puede denegarse cuando el médico general considere que no correspondería divulgar esa información al solicitante.')+
+        legalH3('7. Información sobre usted de otras fuentes')+
+        legalP('Recopilamos información sobre usted en las Soluciones y de otras fuentes: sus médicos, personal de práctica médica, administradores de reclamos de salud y organizaciones de beneficios para pacientes. Podemos combinar toda la información para brindarle Servicios, incluido el análisis de datos, y —cuando se anonimiza— para investigación y mejora de nuestros Servicios.')+
+
+        legalH2('II. Categorías de PII que recopilamos y base legal aplicable')+
+        legalP('Dependiendo de dónde viva y cómo interactúe con nosotros, podemos recopilar la PII detallada a continuación, junto con el propósito del procesamiento y (para el EEE y el Reino Unido) la base legal en la que nos apoyamos.')+
+        piiHtml+
+        legalH3('Cookies')+
+        legalP('Puede configurar su navegador para aceptar cookies solo cuando esté de acuerdo. Si quiere aceptar las de Un Ensayo para Mí pero no las de nuestros proveedores y socios, elija la opción "Bloquear cookies de terceros".')+
+        legalH3('Datos de redes sociales')+
+        legalP('Nombre de usuario y correo electrónico, para darle acceso a su perfil de paciente a través de sus otras cuentas de redes sociales — necesario para nuestro interés legítimo de ofrecerle múltiples formas de acceder a nuestras Soluciones.')+
+        legalP('Tenga en cuenta que:')+
+        legalList(['La pérdida, el uso indebido o el acceso no autorizado a su PII —en particular la información personal confidencial— puede afectar negativamente su privacidad o bienestar.','Puede negarse a proporcionar su información médica protegida, pero usted y sus proveedores de salud no podrán usar nuestros Servicios.','No utilizamos cookies que almacenen su información personal confidencial ni su perfil en función de ella.'])+
+        legalH3('Mensajería móvil SMS/MMS/WhatsApp/notificaciones push')+
+        legalP('Respetamos su privacidad. Solo usaremos su PII para transmitir sus mensajes móviles y responderle si es necesario, incluyendo compartir PII con proveedores de plataformas y compañías telefónicas que nos ayudan a entregar esos mensajes.')+
+        legalStrong('NO VENDEMOS, ALQUILAMOS, PRESTAMOS, INTERCAMBIAMOS, ARRENDAMOS NI TRANSFERIMOS CON FINES DE LUCRO NINGÚN NÚMERO DE TELÉFONO O INFORMACIÓN DEL CLIENTE A NINGÚN TERCERO.')+
+        legalP('Nos reservamos el derecho de divulgar información según sea necesario para cumplir una ley, regulación o solicitud gubernamental, o para proteger nuestros derechos, de acuerdo con las leyes de protección de datos aplicables. Al proporcionarnos PII, usted acepta que sea precisa, completa y verdadera.')+
+        legalP('Podemos comunicarnos con usted y grabar llamadas o comunicaciones (llamada, mensaje de voz, SMS) sobre pedidos, actualizaciones y otros fines informativos. Pueden aplicarse tarifas estándar de su operador. Puede contactar al DPO de Un Ensayo para Mí, o llamar al +52 998 609 0097, +54 11 5235 7848 o +55 21 2018 0193. Puede responder "Stop" o "Cancelar suscripción" a un mensaje de texto para dejar de recibirlos.')+
+        legalH3('Enlaces a otros sitios web')+
+        legalP('El Sitio incluye enlaces a otros sitios web ("Sitios Enlazados"). Proporcionar acceso a ellos no representa ningún respaldo de sus contenidos; la Compañía no es responsable de sus prácticas de privacidad. Le recomendamos revisar las políticas de privacidad publicadas en esos sitios.')+
+
+        legalH2('III. ¿Cuándo compartimos información?')+
+        legalH3('1. Proveedores de servicios')+
+        legalP('Podemos transferir información personal a Proveedores de servicios (contratistas externos, auditores, consultores) contratados para ayudar con actividades financieras u operativas en nuestro nombre, incluidos servicios técnicos y de análisis del sitio web.')+
+        legalH3('2. Requisitos legales')+
+        legalP('Bajo ciertas circunstancias, para cumplir leyes, regulaciones u órdenes judiciales, podemos divulgar su información personal en respuesta a una solicitud gubernamental, o si creemos de buena fe que es necesario para resolver un procedimiento judicial, fraude o irregularidad.')+
+        legalH3('3. Transferencias de activos comerciales')+
+        legalP('Si la Compañía pasa por una fusión, adquisición, bancarrota o venta de activos, su PII puede ser parte de los activos transferidos. No podemos asegurar que se le notificará con anticipación.')+
+        legalH3('4. Protección de la empresa y otros')+
+        legalP('Nos reservamos el derecho de acceder, preservar y divulgar información que creamos necesaria para cumplir la ley, aplicar nuestras condiciones de uso, o proteger los derechos y la seguridad de la Compañía, sus empleados o usuarios.')+
+        legalH3('5. Información agregada o anónima')+
+        legalP('Podemos compartir su PII y datos de uso en conjunto o de forma anónima para mejorar nuestros Servicios, comunicarnos con terceros, y en nuestro informe anual y materiales de marketing.')+
+        legalH3('6. Con consentimiento')+
+        legalP('Excepto como se establece arriba, se le notificará cuando su PII deba compartirse con terceros y podrá evitar ese intercambio.')+
+        legalH3('7. Cómo usamos la información no PII')+
+        legalP('Usamos la no PII para monitorear y mejorar nuestros Servicios, para investigación y fines estadísticos, en servicios de consultoría, y para compartir o licenciar nuestros datos y análisis a programas de asistencia al paciente, laboratorios clínicos y oncólogos, para mejorar sus servicios y educar al público sobre los Servicios que brindamos.')+
+
+        legalH2('IV. ¿Cómo gestionamos los datos de los niños?')+
+        legalH3('Niños de 16 años o más')+
+        legalP('Sujeto a las leyes locales, un niño mentalmente competente de 16 años o más tiene derecho a solicitar o denegar el acceso a sus registros. Si otra persona solicita ese acceso, primero verificamos con el paciente que está de acuerdo.')+
+        legalH3('Niños menores de 16 años')+
+        legalP('A menos que las leyes locales dispongan lo contrario, las personas con responsabilidad parental sobre un menor de 16 años tienen derecho a solicitar acceso a esos registros: la madre biológica, el padre biológico, o quien haya recibido esa responsabilidad por decisión de un tribunal.')+
+
+        legalH2('V. Cómo protegemos y conservamos su información')+
+        legalP('Tomamos medidas de seguridad contra el acceso no autorizado y la alteración, divulgación o destrucción de datos: protocolos de cifrado (SSL), revisiones internas de nuestras prácticas de recopilación y procesamiento, y medidas de seguridad física.')+
+        legalP('No conservamos su PII más tiempo del necesario para los fines del procesamiento. Eliminamos y destruimos los registros según estos plazos:')+
+        retentionHtml+
+        legalP('Podemos retener su PII para el establecimiento, ejercicio o defensa de reclamos legales, o para ponerla a disposición de una autoridad supervisora durante el período que especifique la ley. Contamos con varias capas de seguridad: SSL, controles de acceso, política de contraseñas, cifrados, seudonimización, autenticación, VPN, firewalls y monitoreo de seguridad 24/7.')+
+
+        legalH2('VI. Cómo controlar y corregir su información')+
+        legalP('Puede aceptar o rechazar las cookies desde su navegador. Puede optar por no proporcionar información a nuestros Proveedores de servicios, aunque es posible que no pueda acceder a algunos Servicios.')+
+        legalH3('1. Corrección de su información personal')+
+        legalP('Para acceder a su información, mantenerla actualizada o solicitar su eliminación, puede comunicarse con nosotros a privacy@trialtech.es. En algunos casos, cuando estamos obligados a retener información por ley, es posible que no podamos eliminar cierta información.')+
+        legalH3('2. Control: tus opciones')+
+        legalP('Tienes varias opciones para controlar cómo se comparte y utiliza tu información. Tú eliges:')+
+        legalList(['Almacenar o eliminar los registros que nos proporciones y los informes basados en ellos.','Los informes de compatibilidad con ensayos clínicos que ves o decides ver.','Cuándo y con quién compartes tu información, incluidos cuidadores, familiares o profesionales de la salud.','Eliminar tu cuenta y tus datos en cualquier momento.'])+
+        legalP('Toda persona tiene los siguientes derechos al solicitarlos a la Empresa:')+
+        legalList(['Saber si su PII está siendo procesada.','Solicitar información sobre el procesamiento, si lo hay.','Conocer el propósito del procesamiento y si se usa conforme a ese propósito.','Saber a qué terceros se ha transferido su PII.','Solicitar la corrección de datos incompletos o incorrectos.','Solicitar la eliminación o destrucción de su PII.','Solicitar que se notifique a terceros sobre correcciones o eliminaciones.','Oponerse a decisiones automatizadas basadas en sus datos.','Solicitar compensación por daños derivados de un procesamiento ilegal.'])+
+        legalH3('3. Tus derechos')+
+        legalP('Tienes los siguientes derechos, que se tramitan de inmediato y sin perjuicio para usted:')+
+        derechosHtml+
+        legalH3('4. Más información sobre cookies y otras tecnologías')+
+        legalP('Para más información sobre cookies, incluida la forma de rechazarlas desde la configuración de su navegador, puede consultar los sitios de ayuda de allaboutcookies.org, Google, Google Chrome, Microsoft Internet Explorer, Mozilla Firefox y Flash.')+
+        legalH3('5. Limitación de responsabilidad')+
+        legalP('Cualquier disputa relacionada con las Soluciones, incluida una disputa sobre privacidad, está sujeta a esta Política de Privacidad y a los Términos de uso de la Compañía, incluidas sus limitaciones de responsabilidad.')+
+        legalH3('6. Indisponibilidad de la Solución o los Servicios')+
+        legalP('La Compañía puede alterar, suspender o interrumpir las Soluciones o Servicios por cualquier motivo sin previo aviso, por ejemplo por mantenimiento o mal funcionamiento del equipo.')+
+
+        legalH2('VI. Acuerdo: cambios a esta Política de Privacidad')+
+        legalP('Al utilizar las Soluciones, usted reconoce haber leído esta Política, y que su visita y cualquier disputa sobre privacidad están sujetas a nuestros Términos de uso y a las leyes de España. Podemos actualizar esta Política periódicamente; publicaremos los cambios aquí. Revísela de tanto en tanto y mire la fecha de "Última actualización" en la parte superior de la página.')+
+
+        legalH2('VII. Disposiciones locales')+
+        legalH3('1. California')+
+        legalP('Si es residente de California, bajo la Sección 1798.83 del Código Civil tiene derecho a solicitar información sobre la divulgación de su información personal a terceros para marketing directo durante el año anterior, escribiendo a privacy@trialtech.es. No empleamos tecnología para rastrearlo a través de múltiples Soluciones ni anulamos la configuración de privacidad de su navegador.')+
+        legalH3('2. Unión Europea')+
+        legalP('Si reside en la Unión Europea, aplica además el RGPD (Reglamento 2016/679). Si compartimos sus datos con empresas de nuestro grupo o terceros fuera del EEE, garantizamos salvaguardas adecuadas mediante las Cláusulas Contractuales Tipo de la Comisión Europea. Para ejercer sus derechos, contacte a nuestro DPO en privacy@trialtech.es.')+
+
+        legalH2('VIII. Datos de contacto del responsable')+
+        legalRow('Trialtech SL','Avda. de los Charcos 19, 28860, Madrid, España. NIF: ES B01808039. Correo: privacy@trialtech.es')+
+        legalRow('Delegado de protección de datos — Europa y América','Data Privacy Office, Espanya Industrial 7, 3° 1, 08014 Barcelona. Correo: privacy@trialtech.es')+
+        legalRow('Delegado de protección de datos — Brasil','Vitor Nyari, RNPPD N.º 1877119700101/RJ. Correo: vnyari@trialtech.es')+
+        legalP('Con estos datos puede ejercer los derechos de la sección VI.3 frente al responsable o al delegado de protección de datos, y también dirigirse a la autoridad de control de su país:')+
+        autoridadesHtml+
+      '</div>'+
+    '</div>'+
+    scrollTopBtn();
+  }
+
+  // modales accesibles (role=dialog, foco, Esc) con paso de confirmación antes del éxito
+  var modalType = null;
+  function focusModal(){
+    setTimeout(function(){
+      var f = modalLayer.querySelector('[data-autofocus]') || modalLayer.querySelector('button');
+      if(f) f.focus();
+    }, 20);
+  }
+  function openConfirm(id){
+    var x = trials.filter(function(y){return y.id==id;})[0];
+    modalType = 'confirm';
+    modalLayer.innerHTML =
+      '<div class="modalWrap" data-act="closeModalBg">'+
+        '<div class="modalCard" role="dialog" aria-modal="true" aria-labelledby="cf-t" style="background:#fff;border-radius:20px;padding:clamp(22px,3.4vw,30px);width:min(92vw,420px);box-shadow:0 12px 40px rgba(0,0,0,.18);">'+
+          '<div id="cf-t" style="font-size:18px;font-weight:600;color:#1A1A1A;margin:0 0 10px;line-height:1.3;">'+t('cf_title')+'</div>'+
+          '<p style="font-size:14px;color:#6B6B6B;line-height:1.55;margin:0 0 8px;text-wrap:pretty;">'+t('cf_b1a')+'<span style="color:#1A1A1A;font-weight:500;">'+x.title+'</span>'+t('cf_b1b')+'</p>'+
+          '<p style="font-size:14px;color:#6B6B6B;line-height:1.55;margin:0 0 22px;text-wrap:pretty;">'+t('cf_b2a')+'<span style="color:#1A1A1A;font-weight:500;">'+(formData.contacto||t('contacto_fb'))+'</span>'+t('cf_b2b')+'</p>'+
+          '<div style="display:flex;gap:10px;">'+
+            '<button class="btn-ghost" data-act="closeModalBg" style="flex:1;color:#1A1A1A;border:1px solid #E2E2E2;font-weight:600;font-size:15px;padding:14px;border-radius:8px;cursor:pointer;-webkit-appearance:none;appearance:none;">'+t('cf_cancel')+'</button>'+
+            '<button class="cta" data-act="confirmApply" data-arg="'+id+'" data-autofocus style="flex:1;font-weight:700;font-size:15px;padding:14px;border-radius:8px;cursor:pointer;border:none;-webkit-appearance:none;appearance:none;transition:background .15s,box-shadow .15s,transform .1s;">'+t('cf_confirm')+'</button>'+
+          '</div>'+
+        '</div>'+
+      '</div>';
+    focusModal();
+  }
+  // consentimiento como modal (en vez de checkbox en el form): se muestra recién al tocar el CTA,
+  // después de validar nombre/contacto/archivo. Cancelar vuelve al form sin perder lo ya completado.
+  function openConsent(){
+    modalType = 'consent';
+    modalLayer.innerHTML =
+      '<div class="modalWrap" data-act="closeModalBg">'+
+        '<div class="modalCard" role="dialog" aria-modal="true" aria-labelledby="cn-t" style="background:#fff;border-radius:20px;padding:clamp(22px,3.4vw,30px);width:min(92vw,420px);box-shadow:0 12px 40px rgba(0,0,0,.18);">'+
+          '<div id="cn-t" style="font-size:18px;font-weight:600;color:#1A1A1A;margin:0 0 10px;line-height:1.3;">'+t('consent_modal_title')+'</div>'+
+          '<p style="font-size:14px;color:#6B6B6B;line-height:1.55;margin:0 0 22px;text-wrap:pretty;">'+t('consent')+'</p>'+
+          '<div style="display:flex;gap:10px;">'+
+            '<button class="btn-ghost" data-act="closeModalBg" style="flex:1;color:#1A1A1A;border:1px solid #E2E2E2;font-weight:600;font-size:15px;padding:14px;border-radius:8px;cursor:pointer;-webkit-appearance:none;appearance:none;">'+t('cf_cancel')+'</button>'+
+            '<button class="cta" data-act="confirmConsent" data-autofocus style="flex:1;font-weight:700;font-size:15px;padding:14px;border-radius:8px;cursor:pointer;border:none;-webkit-appearance:none;appearance:none;transition:background .15s,box-shadow .15s,transform .1s;">'+t('consent_accept')+'</button>'+
+          '</div>'+
+        '</div>'+
+      '</div>';
+    focusModal();
+  }
+  function openSuccess(){
+    modalType = 'success';
+    modalLayer.innerHTML =
+      '<div class="modalWrap" data-act="successBg">'+
+        '<div class="modalCard" role="dialog" aria-modal="true" aria-labelledby="sc-t" style="background:#fff;border-radius:20px;padding:clamp(26px,3.4vw,34px);text-align:center;width:min(90vw,380px);box-shadow:0 12px 40px rgba(0,0,0,.18);">'+
+          '<div style="width:58px;height:58px;border-radius:50%;background:#E6F1EF;display:flex;align-items:center;justify-content:center;color:#007567;font-size:28px;margin:0 auto 16px;"><i class="ti ti-check"></i></div>'+
+          '<div id="sc-t" style="font-size:18px;font-weight:600;color:#1A1A1A;margin-bottom:8px;">'+t('sc_title')+'</div>'+
+          '<p style="font-size:14px;color:#6B6B6B;line-height:1.55;margin:0 0 22px;text-wrap:pretty;">'+t('sc_ba')+'<span style="color:#1A1A1A;font-weight:500;">'+(formData.contacto||t('contacto_fb'))+'</span>'+t('sc_bb')+'</p>'+
+          '<button class="cta" data-act="doneApply" data-autofocus style="display:block;width:100%;box-sizing:border-box;font-weight:700;font-size:15px;padding:15px;border:none;border-radius:8px;cursor:pointer;-webkit-appearance:none;appearance:none;transition:background .15s,box-shadow .15s,transform .1s;">'+t('sc_done')+'</button>'+
+        '</div>'+
+      '</div>';
+    focusModal();
+  }
+  function closeModal(){ modalLayer.innerHTML=''; modalType=null; }
+  // al terminar el flujo se vuelve a la pantalla inicial con el estado reseteado
+  function resetHome(){ formData={}; formErrors={}; uploaded=false; uploadedName='historia-clinica.pdf'; uploadedPreview=null; applied={}; closeModal(); render('intake'); }
+
+  // compartir: prototipo, link simulado (no hay backend). Share nativo o copia al portapapeles + toast.
+  function copyText(s){
+    try{ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(s); return; } }catch(e){}
+    try{ var ta=document.createElement('textarea'); ta.value=s; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.focus(); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }catch(e){}
+  }
+  var toastTimer=null;
+  function toast(msg){
+    var el=document.getElementById('tn-toast');
+    if(!el){ el=document.createElement('div'); el.id='tn-toast'; document.getElementById('tn').appendChild(el); }
+    el.textContent=msg; el.classList.add('show');
+    clearTimeout(toastTimer); toastTimer=setTimeout(function(){ el.classList.remove('show'); },1900);
+  }
+  function shareStudy(id){
+    var x=trials.filter(function(y){return y.id==id;})[0];
+    var url='https://trialnode.app/estudio/'+id; // simulado: no existe backend (prototipo)
+    if(navigator.share){ navigator.share({title:'TrialNode', text:(x?x.title:''), url:url}).catch(function(){}); return; }
+    copyText(url); toast(t('enlace_copiado'));
+  }
+
+  // abre Google Maps buscando la ubicación del centro. Comportamiento real (no simulado), pero a
+  // nivel zona: los centros son ficticios, no hay coordenadas exactas (no se inventa dirección).
+  function openMap(id){
+    var x=trials.filter(function(y){return y.id==id;})[0]; if(!x) return;
+    var q=encodeURIComponent(x.loc.replace(/ · /g,' '));
+    try{ window.open('https://www.google.com/maps/search/?api=1&query='+q,'_blank','noopener'); }catch(e){}
+  }
+
+  var current='intake';
+  var currentArg=null;
+  // desktop: si el formulario del intake no entra en el alto disponible (mensajes de error, laptop
+  // bajo), pasa nombre/teléfono a una fila para ganar espacio vertical. Mide overflow real en vez de
+  // un umbral de CSS: los container queries no reflejan bien el alto que da align-self:stretch (probado).
+  function fitIntakeForm(){
+    var card = vp.querySelector('.form-card');
+    if(!card) return;
+    card.classList.remove('compact');
+    if(window.innerWidth >= 860 && card.scrollHeight > card.clientHeight + 1) card.classList.add('compact');
+  }
+
+  function render(name, arg){
+    current=name; currentArg=arg;
+    closeModal();
+    vp.setAttribute('data-screen', name);
+    // solo en detail el shell abraza el contenido (deja el 100dvh sin scroll); intake/results
+    // conservan el comportamiento de siempre
+    if(tnRoot) tnRoot.classList.toggle('is-scrollable', name==='detail'||name==='terms'||name==='privacy');
+    if(name==='intake') vp.innerHTML=screenIntake();
+    else if(name==='analyze'){ vp.innerHTML=screenAnalyzing(); startSteps(); }
+    else if(name==='results') vp.innerHTML=screenResults();
+    else if(name==='detail') vp.innerHTML=screenDetail(arg);
+    else if(name==='terms') vp.innerHTML=screenTerms();
+    else if(name==='privacy') vp.innerHTML=screenPrivacy();
+    renderNav(name, arg);
+    renderFooter();
+    fitIntakeForm();
+  }
+  // valida los campos obligatorios y, si están OK, pide el consentimiento en un modal (ver openConsent)
+  function validateAndAnalyze(){
+    var nombreEl=document.getElementById('f-nombre');
+    var contactoEl=document.getElementById('f-contacto');
+    formData.nombre = nombreEl ? nombreEl.value.trim() : '';
+    formData.contacto = contactoEl ? contactoEl.value.trim() : '';
+    formErrors = {};
+    if(!formData.nombre) formErrors.nombre=t('err_nombre');
+    var esMail=/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(formData.contacto);
+    var esTel=formData.contacto.replace(/\D/g,'').length>=6;
+    if(!formData.contacto) formErrors.contacto=t('err_contacto_empty');
+    else if(!esMail && !esTel) formErrors.contacto=t('err_contacto_bad');
+    if(!uploaded) formErrors.upload=t('err_upload');
+    if(Object.keys(formErrors).length){
+      vp.innerHTML=screenIntake();
+      fitIntakeForm();
+      // lleva al usuario al primer campo con error y lo enfoca, para que no quede trabado sin ver por qué
+      var firstInput = vp.querySelector('.tnin.err');
+      var firstErr = firstInput || vp.querySelector('.fielderr');
+      if(firstErr && firstErr.scrollIntoView) firstErr.scrollIntoView({behavior:'smooth', block:'center'});
+      if(firstInput && firstInput.focus) firstInput.focus({preventScroll:true});
+      return;
+    }
+    openConsent();
+  }
+
+  function handle(e){
+    var el=e.target.closest('[data-act]'); if(!el) return;
+    var act=el.getAttribute('data-act');
+    // cambio de idioma: reemplaza data y re-renderiza la pantalla actual. Siempre cierra el dropdown
+    // y re-renderiza (incluso si tocás el idioma ya activo), para que el menú no quede abierto colgado.
+    if(act==='setLang'){
+      var L=el.getAttribute('data-arg');
+      langMenuOpen=false;
+      if(L!==lang && I18N[L]){ lang=L; trials=TRIALS[lang]; document.documentElement.lang=lang; }
+      render(current, currentArg);
+      return;
+    }
+    // abre/cierra el menú del dropdown de idioma sin tocar el resto de la pantalla
+    if(act==='toggleLangMenu'){
+      langMenuOpen=!langMenuOpen;
+      renderNav(current, currentArg);
+      var ddBtn=nav.querySelector('.lang-dd-btn'); if(ddBtn) ddBtn.focus();
+      return;
+    }
+    if(act==='removeUpload'){ uploaded=false; uploadedPreview=null; uploadedName='historia-clinica.pdf'; if(formErrors.upload) delete formErrors.upload; renderSlot(); return; }
+    if(act==='analyze'){ validateAndAnalyze(); return; }
+    if(act==='share'){ shareStudy(el.getAttribute('data-arg')); return; }
+    if(act==='openMap'){ openMap(el.getAttribute('data-arg')); return; }
+    if(act==='scrollTop'){ window.scrollTo({top:0, behavior:'smooth'}); return; }
+    if(act==='apply'){ openConfirm(el.getAttribute('data-arg')); return; }
+    if(act==='confirmApply'){ applied[el.getAttribute('data-arg')]=true; openSuccess(); return; }
+    if(act==='confirmConsent'){ closeModal(); render('analyze'); return; }
+    if(act==='doneApply'){ resetHome(); return; }
+    if(act==='successBg'){ if(e.target===el){ resetHome(); } return; }
+    if(act==='goHome'){ resetHome(); return; }
+    if(act==='closeModalBg'){ if(e.target===el || el.tagName==='BUTTON') closeModal(); return; }
+    render(act, el.getAttribute('data-arg'));
+  }
+  vp.addEventListener('click', handle); nav.addEventListener('click', handle); modalLayer.addEventListener('click', handle); footerEl.addEventListener('click', handle);
+
+  // drag & drop en el dropzone (prototipo: toma el nombre real, no sube nada)
+  function dropZone(e){ return e.target.closest ? e.target.closest('.up-wrap') : null; }
+  function renderSlot(){ var slot=document.getElementById('uploadSlot'); if(slot){ slot.innerHTML=uploadSlot(); slot.classList.toggle('is-filled', uploaded); } }
+  // toma el archivo (foto o PDF), marca cargado al instante y —si es imagen— carga el preview real (async). No sube nada (prototipo).
+  function acceptFile(f){
+    uploadedName = (f && f.name) ? f.name : 'historia-clinica.pdf';
+    uploaded = true; uploadedPreview = null;
+    if(formErrors.upload) delete formErrors.upload;
+    renderSlot();
+    if(f && f.type && f.type.indexOf('image/')===0 && typeof FileReader!=='undefined'){
+      var r=new FileReader(); r.onload=function(){ uploadedPreview=r.result; renderSlot(); }; try{ r.readAsDataURL(f); }catch(e){}
+    }
+  }
+  // el input real dispara 'change' al elegir/sacar la foto
+  vp.addEventListener('change', function(e){
+    var inp=e.target; if(!inp || inp.id!=='hc-file' || !inp.files || !inp.files.length) return;
+    acceptFile(inp.files[0]);
+  });
+  vp.addEventListener('dragover', function(e){ var z=dropZone(e); if(z){ e.preventDefault(); if(e.dataTransfer) e.dataTransfer.dropEffect='copy'; z.classList.add('drag'); } });
+  vp.addEventListener('dragleave', function(e){ var z=dropZone(e); if(z && !z.contains(e.relatedTarget)) z.classList.remove('drag'); });
+  vp.addEventListener('drop', function(e){
+    var z=dropZone(e); if(!z) return;
+    e.preventDefault(); z.classList.remove('drag');
+    acceptFile(e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]);
+  });
+
+  // los pasos avanzan una sola vez y se detienen (nada de loop infinito)
+  var stepTimer=null;
+  function startSteps(){
+    clearInterval(stepTimer);
+    var steps=[t('an1'),t('an2'),t('an3'),t('an4')];
+    var si=0;
+    stepTimer=setInterval(function(){
+      var s=document.getElementById('step');
+      if(!s || current!=='analyze'){ clearInterval(stepTimer); return; }
+      if(si < steps.length-1){ si++; s.textContent=steps[si]; }
+      else { clearInterval(stepTimer); }
+    }, 800);
+  }
+
+  // Escape cierra el modal abierto, o si no hay modal, el dropdown de idioma
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape' && modalType){
+      if(modalType==='success'){ resetHome(); }
+      else closeModal();
+      return;
+    }
+    if(e.key==='Escape' && langMenuOpen){ langMenuOpen=false; renderNav(current, currentArg); }
+  });
+
+  // click afuera del dropdown de idioma lo cierra (patrón estándar de menú)
+  document.addEventListener('click', function(e){
+    if(langMenuOpen && !e.target.closest('.lang-dd')){ langMenuOpen=false; renderNav(current, currentArg); }
+  });
+
+  // si la ventana cambia de tamaño en vivo (redimensionar el navegador), re-mide el intake.
+  window.addEventListener('resize', function(){ if(current==='intake') fitIntakeForm(); });
+
+  render('intake');
+})();
+</script>
+<script>
+(function(){
+  var pl=document.getElementById("tn-preloader"); if(!pl) return;
+  var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var wait=reduce?1000:2300; // ~1450ms lo que tarda en aparecer todo el logo letra por letra + un sostén corto
+  setTimeout(function(){
+    pl.classList.add("tn-hide");
+    setTimeout(function(){ if(pl.parentNode) pl.parentNode.removeChild(pl); },550);
+  },wait);
+})();
+</script>
+</body>
+</html>
