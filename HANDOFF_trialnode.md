@@ -3,7 +3,7 @@
 > Actualizado tras varias iteraciones. Reemplaza al handoff anterior.
 
 ## Cómo retomar
-- **Archivo activo: `match_ensayos_trialnode_fixed.html`** — único con el que se continúa. Un solo archivo HTML autónomo (con `<head>`), anda offline.
+- **Archivo activo: `buscador-de-estudios.html`** (renombrado en la Tanda 14; se llamaba `match_ensayos_trialnode_fixed.html`) — único con el que se continúa. Un solo archivo HTML autónomo (con `<head>`), anda offline.
 - **Adjuntar ese .html + este handoff al nuevo chat.** Los archivos no persisten entre sesiones.
 - Antes de tocar nada, leer los comentarios `// FIX N:`, `/* FIX ... */`, `/* ajuste N */`, `/* cambio N */` dentro del archivo: son el mapa de todo lo hecho.
 
@@ -258,4 +258,21 @@ Es un cambio de flujo real, no solo visual — vale la pena mostrárselo a algui
 
 **Validado:** `node --check`, y en el navegador: sombra de `.rcard` idéntica a `.form-card` en reposo (confirmado con `getComputedStyle`) y sin escalada al hover; radar+ADN con la estructura esperada (2 anillos, 2 hebras, 4 travesaños) y la transición a `results` a los 2.6s intacta; flujo completo repetido sin romper nada.
 
-**Validado:** `node --check` en los 2 scripts, flujo completo (intake→analyze→results→detail→postular→confirmar→éxito), footer y sus links, breadcrumbs/vuelta atrás en terms/privacy, botón volver arriba, layout compacto del intake en 1280×720 con y sin errores (sin pisar el footer) vs. 1440×900 (sin compactar de más).
+---
+
+## Tanda 14 — a internet: GitHub + GitHub Pages
+
+Pedido de Luis: subirlo a internet para poder mostrarlo con un link, no solo local.
+
+- **Repo privado.** Se inicializó git en la carpeta (no lo era) y se creó `https://github.com/LuisKehm1989/trialnode-prototipo` (privado — el archivo tiene contenido real de Trialtech scrapeado de sus páginas de términos/privacidad, no tenía sentido exponerlo público sin necesidad). `.claude/` (settings locales del harness) va en `.gitignore`, no se sube.
+- **Autenticación:** este entorno no tenía `gh` CLI ni credenciales de git guardadas. El primer `git push` falló (el Credential Manager de Windows no pudo abrir el login por navegador desde una herramienta no interactiva) — lo resolvió Luis corriendo `git push` él mismo desde su propia terminal, lo que disparó el login por navegador correctamente. Una vez logueado una vez, quedó guardado a nivel Windows y los pushes posteriores desde acá funcionaron solos.
+- **GitHub Pages.** Luis lo activó a mano desde Settings → Pages del repo (Deploy from a branch, `main`, `/`) — eso no se puede hacer por API sin autenticación propia, así que quedó de su lado. Se agregó `index.html` en la raíz con un redirect (`meta http-equiv="refresh"`) al archivo real, para que la URL corta (`https://luiskehm1989.github.io/trialnode-prototipo/`) funcione sin tener que poner el nombre del archivo. **Importante:** un sitio de Pages es público para cualquiera con el link aunque el repo siga privado — Luis lo sabía y lo activó de todos modos.
+- **Se probó primero publicarlo como Artifact de Claude** (privado, sin necesidad de GitHub) antes de que Luis aclarara que quería GitHub específicamente. Ese artifact quedó publicado pero es un camino aparte, no depende de este repo.
+- **Archivo renombrado:** `match_ensayos_trialnode_fixed.html` → `buscador-de-estudios.html` (a pedido de Luis, ya subido). El redirect de `index.html` y esta referencia de "archivo activo" arriba en el handoff se actualizaron. Cualquier mención vieja a `match_ensayos_trialnode_fixed.html` en el resto de este documento (por ejemplo el backup ya borrado) es histórica, de cuando ese era el nombre.
+
+**Validado:** `git log`/`git status` confirman el push; se abrió la URL real de Pages con el navegador (no `WebFetch`, que no ejecuta JS y solo ve el HTML crudo) y se corrió el flujo completo intake→consentimiento→analyze→results ahí mismo, en vivo.
+
+### Cómo retomar esto en otra sesión
+- El repo es `https://github.com/LuisKehm1989/trialnode-prototipo`, rama `main`.
+- Para pushear se necesita que Luis haya logueado git con GitHub al menos una vez en esa máquina (Credential Manager de Windows) — si es una máquina nueva, el primer push hay que pedirle que lo corra él.
+- Si se agregan archivos nuevos que deban ir al sitio público, recordar que quedan expuestos vía Pages sin login — no subir nada que no deba ser público.
